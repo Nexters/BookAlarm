@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="category">
+        <item>소설</item>
+        <item>시/에세이</item>
+        <item>예술/대중문화</item>
+        <item>사회과학</item>
+        <item>역사와 문화</item>
+        <item>잡지</item>
+        <item>만화</item>
+        <item>유아</item>
+        <item>아동</item>
+        <item>가정과 생활</item>
+        <item>청소년</item>
+        <item>초등학습서</item>
+        <item>고등학습서</item>
+        <item>국어/외국어/사전</item>
+        <item>자연과 과학</item>
+        <item>경제경영</item>
+        <item>자기계발</item>
+        <item>인문</item>
+        <item>종교/역학</item>
+        <item>컴퓨터/인터넷</item>
+        <item>자격서/수험서</item>
+        <item>취미/레저</item>
+        <item>전공도서/대학교재</item>
+        <item>건강/뷰티</item>
+        <item>여행</item>
+        <item>중등학습서</item>
+
+    </string-array>
+</resources>
