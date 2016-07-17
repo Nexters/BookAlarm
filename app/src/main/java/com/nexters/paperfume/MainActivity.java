@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.nexters.paperfume.Data.DataStorage;
+import com.nexters.paperfume.Resource.BackPressCloseHandler;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             , "126", "128", "129"};
     DataStorage dataStorage = new DataStorage();
     ListView listView;
-
+    private BackPressCloseHandler backPressCloseHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Spinner category_Spinner = (Spinner) findViewById(R.id.category_Spinner);
         listView = (ListView) findViewById(R.id.Book_list);
         new GetData().execute();
-
+        backPressCloseHandler = new BackPressCloseHandler(this);
         category_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -60,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 
     public class GetData extends AsyncTask<Void, Void, Void> {
