@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
             TextView title = (TextView) rowView.findViewById(R.id.list_Item);
             ImageView book_image = (ImageView) rowView.findViewById(R.id.Book_Image);
             title.setText(titlevec.get(position));
-            Glide.with(MainActivity.this).load(Imagevec.get(position)).into(book_image);
+            Glide.with(MainActivity.this).load(Imagevec.get(position).trim()).into(book_image);
             return rowView;
         }
     }
