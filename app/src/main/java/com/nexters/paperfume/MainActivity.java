@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.nexters.paperfume.Data.DataStorage;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         // 태그 이름이 description과 같다면 desc변수에 저장
-                        else if (tagname.equals("description"))
+                        else if (tagname.equals("coverSmallUrl"))
                             desc += xpp.getText();
                     } else if (eventType == XmlPullParser.END_TAG) {
                         // end tag 이름을 얻어옴
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            CustomList adapter = new CustomList(titlevec);
+            CustomList adapter = new CustomList(titlevec,descvec);
             listView = (ListView) findViewById(R.id.Book_list);
             listView.setAdapter(adapter);
         }
@@ -163,10 +165,12 @@ public class MainActivity extends AppCompatActivity {
 
     public class CustomList extends BaseAdapter {
         Vector<String> titlevec;
+        Vector<String> Imagevec;
 
         //클래스의 객체가 생성됬을때 정보를 arrayAdapter에 보내면 여기 안에있는 생성자의 정보를 받아와서 다시 this.context = context를 통해 안에 넣어준다
-        CustomList(Vector<String> titlevec) {
+        CustomList(Vector<String> titlevec, Vector<String> Imagevec) {
             this.titlevec = titlevec;
+            this.Imagevec = Imagevec;
         }
 
         @Override
@@ -189,7 +193,9 @@ public class MainActivity extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             View rowView = inflater.inflate(R.layout.list_item, null, true);
             TextView title = (TextView) rowView.findViewById(R.id.list_Item);
+            ImageView book_image = (ImageView) rowView.findViewById(R.id.Book_Image);
             title.setText(titlevec.get(position));
+            Glide.with(MainActivity.this).load(Imagevec.get(position)).into(book_image);
             return rowView;
         }
     }

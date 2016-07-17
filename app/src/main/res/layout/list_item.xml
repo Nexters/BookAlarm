@@ -2,10 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/list_Item"
-        android:text="hi"/>
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Book_Image"
+            android:src="@drawable/bok"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_Item"
+            android:text="hi"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/Book_Image" />
+    </RelativeLayout>
 
 </LinearLayout>
