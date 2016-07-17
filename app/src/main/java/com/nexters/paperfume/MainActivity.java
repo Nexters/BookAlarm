@@ -1,6 +1,10 @@
 package com.nexters.paperfume;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     DataStorage dataStorage = new DataStorage();
     ListView listView;
     private BackPressCloseHandler backPressCloseHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +51,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Spinner category_Spinner = (Spinner) findViewById(R.id.category_Spinner);
         listView = (ListView) findViewById(R.id.Book_list);
-        new GetData().execute();
+        if (isNetworkAvailable(getApplicationContext())) {
+            new GetData().execute();
+        } else {
+
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Error")
+                    .setMessage("네트워크에 연결되지 않았습니다. 네트워크를 확인해주세요.")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+        }
+
+
         backPressCloseHandler = new BackPressCloseHandler(this);
         category_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -61,6 +77,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        boolean value = false;
+
+        ConnectivityManager connec = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED
+                || connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED) {
+            value = true;
+        }
+
+        // Log.d ("1", Boolean.toString(value) );
+        return value;
     }
 
     @Override
@@ -96,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 XmlPullParser xpp = factory.newPullParser();
 
                 // 웹사이트에 접속
+
                 url = new URL(uri);
                 // 사이트 접속후에 xml 문서를 읽어서 가져옴
                 InputStream in = url.openStream();
@@ -164,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            CustomList adapter = new CustomList(titlevec,descvec);
+            CustomList adapter = new CustomList(titlevec, descvec);
             listView = (ListView) findViewById(R.id.Book_list);
             listView.setAdapter(adapter);
         }
@@ -201,8 +232,13 @@ public class MainActivity extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.list_item, null, true);
             TextView title = (TextView) rowView.findViewById(R.id.list_Item);
             ImageView book_image = (ImageView) rowView.findViewById(R.id.Book_Image);
-            title.setText(titlevec.get(position));
-            Glide.with(MainActivity.this).load(Imagevec.get(position).trim()).into(book_image);
+
+            try {
+                title.setText(titlevec.get(position));
+                Glide.with(MainActivity.this).load(Imagevec.get(position).trim()).into(book_image);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
             return rowView;
         }
     }
