@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.nexters.paperfume.Data.DataStorage;
 import com.nexters.paperfume.Resource.BackPressCloseHandler;
 
+import com.nexters.paperfume.firebase.Firebase;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Firebase 로그인
+        Firebase.getInstance().login();
     }
 
     public boolean isNetworkAvailable(Context context) {
