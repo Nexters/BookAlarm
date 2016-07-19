@@ -18,6 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+		
+		//apply signing config
+		if(project.hasProperty("signingGradle") && new File(project.property("signingGradle")).exists()) {
+				apply from: project.property("signingGradle");
+		}
 }
 
 dependencies {
