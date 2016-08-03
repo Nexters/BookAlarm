@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/setting"
+    >
+
+<!--    <fragment
+        android:id="@+id/fragment_place"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:name="com.nexters.paperfume.GenderSettingFragment"
+        tools:layout="@layout/fragment_setting_gender" />-->
+
+<!--    <Button
+        android:text="다음"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="47dp"
+        android:id="@+id/setting_next_button"
+        android:onClick="selectFrag"/>-->
+</RelativeLayout>
