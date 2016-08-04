@@ -1,65 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+                android:orientation="vertical" android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_color">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="17.7dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
         android:id="@+id/setting_color_text"
-        android:textSize="30dp"
-        android:text="어떤 색을 좋아해요?" />
+        android:textSize="23.3sp"
+        android:textColor="#FFFFFF"
+        android:text="@string/color_question_text"/>
 
-    <Button
-        android:text="다음"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="22dp"
-        android:id="@+id/setting_color_button"/>
 
     <RadioGroup
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/setting_gender_text"
-        android:layout_marginTop="150dp"
+        android:layout_below="@+id/setting_color_text"
+        android:layout_marginTop="50dp"
+        android:layout_centerInParent="true"
         android:id="@+id/setting_color_group">
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/setting_color_group1"
-            android:layout_marginLeft="20dp">
+            android:layout_marginLeft="-0dp">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_purple"
-                android:text="보라"
-                android:textSize="20dp" />
+                android:text="@string/color_purple"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_blue"
-                android:text="파랑"
-                android:textSize="20dp"
+                android:text="@string/color_blue"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
                 android:layout_marginTop="50dp"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_pink"
-                android:text="분홍"
-                android:textSize="20dp"
+                android:text="@string/color_pink"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
                 android:layout_marginTop="50dp"/>
         </RadioGroup>
 
@@ -73,23 +68,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_black"
-                android:text="검정"
-                android:textSize="20dp" />
+                android:text="@string/color_black"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_sky"
-                android:text="하늘"
-                android:textSize="20dp"
+                android:text="@string/color_sky"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
                 android:layout_marginTop="50dp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_red"
-                android:text="빨강"
-                android:textSize="20dp"
+                android:text="@string/color_red"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
                 android:layout_marginTop="50dp"/>
         </RadioGroup>
         <RadioGroup
@@ -102,132 +100,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_green"
-                android:text="초록"
-                android:textSize="20dp"/>
+                android:text="@string/color_green"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_yelow"
-                android:text="노랑"
-                android:textSize="20dp"
+                android:text="@string/color_yellow"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
                 android:layout_marginTop="50dp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_white"
-                android:text="하양"
-                android:textSize="20dp"
+                android:text="@string/color_white"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
                 android:layout_marginTop="50dp"/>
         </RadioGroup>
     </RadioGroup>
-<!--    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:id="@+id/setting_color_purple"
-        android:layout_below="@+id/setting_color_text"
-        android:text="보라"
-        android:textSize="20dp"
-        android:layout_centerHorizontal="true" />
 
-    <CheckBox
+    <Button
+        android:text="@string/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:id="@+id/setting_color_blue"
-        android:layout_below="@+id/setting_color_purple"
-        android:text="파랑"
-        android:textSize="20dp"
-        android:layout_centerHorizontal="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:id="@+id/setting_color_pink"
-        android:layout_below="@+id/setting_color_blue"
-        android:text="분홍"
-        android:textSize="20dp"
-        android:layout_centerHorizontal="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:id="@+id/setting_color_black"
-        android:text="검정"
-        android:textSize="20dp"
-        android:layout_below="@+id/setting_color_text"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:id="@+id/setting_color_sky"
-        android:text="하늘"
-        android:textSize="20dp"
-        android:layout_below="@+id/setting_color_black"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:id="@+id/setting_color_red"
-        android:text="빨강"
-        android:textSize="20dp"
-        android:layout_below="@+id/setting_color_sky"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:id="@+id/setting_color_green"
-        android:text="초록"
-        android:textSize="20dp"
-        android:layout_below="@+id/setting_color_text"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="32dp"
-        android:layout_marginEnd="32dp" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:id="@+id/setting_color_yelow"
-        android:text="노랑"
-        android:textSize="20dp"
-        android:layout_below="@+id/setting_color_green"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="32dp"
-        android:layout_marginEnd="32dp" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:id="@+id/setting_color_white"
-        android:text="하양"
-        android:textSize="20dp"
-        android:layout_below="@+id/setting_color_yelow"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="32dp"
-        android:layout_marginEnd="32dp" />-->
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="139.3dp"
+        android:layout_marginBottom="55.3dp"
+        android:layout_marginRight="139.3dp"
+        android:id="@+id/setting_color_button"
+        android:textAlignment="center"
+        android:textSize="16sp" />
 
 </RelativeLayout>

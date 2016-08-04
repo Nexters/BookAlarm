@@ -9,14 +9,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingActivity">
+        <activity android:name=".SettingActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Splash" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity android:name=".Splash" android:theme="@style/Theme.AppCompat.Light.NoActionBar" android:screenOrientation="portrait"/>
         <activity android:name=".FeelingActivity" />
         <activity android:name=".PerfumeActivity" />
 
