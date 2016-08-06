@@ -1,5 +1,7 @@
 package com.nexters.paperfume;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,10 +14,10 @@ import android.widget.Button;
 public class PerfumeActivity extends AppCompatActivity {
     Button button;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_perfume);
         button = (Button) findViewById(R.id.getting_books);
         button.setOnClickListener(new Button.OnClickListener(){
@@ -23,9 +25,10 @@ public class PerfumeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Selected feelings post to server
 
-                //Intent intent = new Intent(PerfumeActivity.this, PerfumeActivity.class);
+                Intent intent = new Intent(PerfumeActivity.this, MainActivity.class);
                 //intent.putExtra() //books data
-                //startActivity(intent);
+                startActivity(intent);
+                finish();
             }
         });
     }

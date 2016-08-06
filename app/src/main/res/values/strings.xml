@@ -21,4 +21,6 @@
     <string name="color_pink">분홍</string>
     <string name="color_white">하양</string>
     <string name="next">다음</string>
+
+    <string name="title_activity_detail">Detail</string>
 </resources>

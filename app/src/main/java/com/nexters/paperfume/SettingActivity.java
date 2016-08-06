@@ -21,6 +21,7 @@ public class SettingActivity extends AppCompatActivity implements SettingListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //스플래시 액티비티 실행
         Intent intent = new Intent(SettingActivity.this, Splash.class);
         startActivity(intent);
         setContentView(R.layout.activity_setting);
