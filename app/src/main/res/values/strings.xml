@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Paperfume</string>
-    <string name="splash_text">지친 당신에게\n책 냄새를\n선물할게요.</string>
+    <string name="splash_text">지친 당신에게 책 냄새를 선물할게요.</string>
     <string name="gender_question_text">성별이\n뭐에요?</string>
     <string name="gender_male">남자에요</string>
     <string name="gender_female">여자에요</string>
