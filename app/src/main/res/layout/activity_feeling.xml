@@ -10,8 +10,8 @@
     tools:context="com.nexters.paperfume.MainActivity">
 
     <TextView
-        android:text="지금 기분이 어때요?"
-        android:textSize="30dp"
+        android:text="@string/feeling_question_text"
+        android:textSize="30sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -30,17 +30,14 @@
         android:layout_marginTop="80dp">
 
         <RadioButton
-            android:text="행복해요"
-            android:textSize="20dp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/feeling_happy"
-            android:layout_below="@+id/feeling_text"
             android:layout_gravity="center"/>
 
         <RadioButton
-            android:text="그리워요"
-            android:textSize="20dp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/feeling_miss"
@@ -48,8 +45,7 @@
             android:layout_marginTop="30dp" />
 
         <RadioButton
-            android:text="우울해요"
-            android:textSize="20dp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/feeling_groomy"
@@ -57,8 +53,7 @@
             android:layout_marginTop="30dp" />
 
         <RadioButton
-            android:text="답답해요"
-            android:textSize="20dp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/feeling_stifled"
@@ -66,7 +61,7 @@
             android:layout_marginTop="30dp" />
     </RadioGroup>
     <Button
-        android:text="다음"
+        android:text="@string/next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
