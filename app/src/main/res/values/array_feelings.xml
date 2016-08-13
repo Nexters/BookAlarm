@@ -34,11 +34,4 @@
         <item>나만 이런 불만을 가지고 있는건지 궁금해.</item>
         <item>왜 이렇게 나를 못살게 구는건지 모르겠어.</item>
     </string-array>
-
-    <string-array name="fragrence_chocolate">
-        <item>chocolate_1.jpg</item>
-    </string-array>
-    <string-array name="fragrence_cinnamon">
-        <item>cinnamon_1.jpg</item>
-    </string-array>
 </resources>
