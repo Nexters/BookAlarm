@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nexters.paperfume.firebase.Firebase;
+import com.nexters.paperfume.models.RecommendBooks;
 import com.nexters.paperfume.util.SecretTextView;
 import com.nexters.paperfume.tmp.Book;
 
@@ -213,13 +214,24 @@ public class MainActivity extends AppCompatActivity {
     private void processLoginSuccess(){
         //로그인 성공에 대한 처리
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("recommend_books");
+        DatabaseReference ref = database.getReference("recommend_books/by_feeling");
         ref.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //TODO
-                        Log.d("Paperfume","Read Data : " + dataSnapshot.getValue().toString() );
+                        RecommendBooks rbook = dataSnapshot.getValue(RecommendBooks.class);
+
+                        RecommendBooks.getInstance().getHappy().clear();
+                        RecommendBooks.getInstance().getHappy().addAll(rbook.getHappy());
+
+                        RecommendBooks.getInstance().getMiss().clear();
+                        RecommendBooks.getInstance().getMiss().addAll(rbook.getMiss());
+
+                        RecommendBooks.getInstance().getGroomy().clear();
+                        RecommendBooks.getInstance().getGroomy().addAll(rbook.getGroomy());
+
+                        RecommendBooks.getInstance().getStifled().clear();
+                        RecommendBooks.getInstance().getStifled().addAll(rbook.getStifled());
                     }
 
                     @Override
