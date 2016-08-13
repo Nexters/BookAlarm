@@ -27,11 +27,11 @@ public class InstanceIDService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String token) {
-        FirebaseUser user = Firebase.getInstance().getUser();
-        if(user != null) {
+        String userUid = Firebase.getInstance().getUserUid();
+        if(userUid != null) {
             //Realtime Database 연결
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference ref = database.getReference(String.format("users/%s/registration_id", user.getUid()));
+            DatabaseReference ref = database.getReference(String.format("users/%s/registration_id", userUid));
             ref.setValue(token);
         }
     }

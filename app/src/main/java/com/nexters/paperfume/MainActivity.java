@@ -17,6 +17,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.util.SecretTextView;
 import com.nexters.paperfume.tmp.Book;
@@ -61,7 +67,20 @@ public class MainActivity extends AppCompatActivity {
         first=true;
 
         //Firebase 로그인
-        Firebase.getInstance().login();
+        //successMethod 에서 로그인 완료처리..여기서 책 데이터 도 로딩..
+        Firebase.getInstance().login(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        processLoginSuccess();
+                    }
+                },
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        processLoginFail();
+                    }
+                } );
     }
 
     @Override
@@ -190,4 +209,30 @@ public class MainActivity extends AppCompatActivity {
             otherPage[1]=1;
         }
     }
+
+    private void processLoginSuccess(){
+        //로그인 성공에 대한 처리
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("recommend_books");
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //TODO
+                        Log.d("Paperfume","Read Data : " + dataSnapshot.getValue().toString() );
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //TODO
+                    }
+                }
+        );
+    }
+
+    private void processLoginFail(){
+        //로그인 실패에 대한 처리 ( 네트워크 연결 실패 )
+        Log.d("Paperfume", "processLoginFailed");
+    }
+
 }
