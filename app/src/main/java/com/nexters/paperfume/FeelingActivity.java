@@ -81,6 +81,7 @@ public class FeelingActivity extends AppCompatActivity {
                 //Selected feelings post to server
 
                 Intent intent = new Intent(FeelingActivity.this, PerfumeActivity.class);
+                intent.putExtra("feeling",feeling);
                 //intent.putExtra() //Perpume data
                 startActivity(intent);
             }
