@@ -10,9 +10,20 @@ import java.util.LinkedList;
 
 
 public class FragranceInfo {
-    private String mName;
-    private PartOfDay mPartOfDay;
-    private String mImageAsset;
+    private String mAdjective;          //형용사
+    private String mName;               //향기 이름
+    private PartOfDay mPartOfDay;       //향기 추천대 시간
+    private String mImageAsset;         //이미지 어셋 위치
+
+
+
+    public String getAdjective() {
+        return mAdjective;
+    }
+
+    public void setAdjective(String mAdjective) {
+        this.mAdjective = mAdjective;
+    }
 
     public String getName() {
         return mName;

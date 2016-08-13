@@ -5,7 +5,7 @@
     <fragrance name="초콜릿" image_asset_path="fragrence/chocolate"/>
   </day>
   <night>
-    <fragrance name="사향" image_asset_path="fragrence/musk"/>
-    <fragrance name="야래향" image_asset_path="fragrence/night_blooming_jasmine"/>
+    <fragrance name="물안개" image_asset_path="fragrence/musk"/>
+    <fragrance name="갈대" image_asset_path="fragrence/night_blooming_jasmine"/>
   </night> 
 </feeling>

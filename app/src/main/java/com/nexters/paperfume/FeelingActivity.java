@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.nexters.paperfume.enums.Feeling;
+
 import java.util.Random;
 
 /**
@@ -17,7 +19,7 @@ import java.util.Random;
 public class FeelingActivity extends AppCompatActivity {
     Button button;
     RadioGroup radioGroup;
-    private String feeling;
+    private Feeling feeling;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,16 +67,16 @@ public class FeelingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 switch (radioGroup.getCheckedRadioButtonId()) {
                     case R.id.feeling_groomy:
-                        feeling = "groomy";
+                        feeling = Feeling.GROOMY;
                         break;
                     case R.id.feeling_happy:
-                        feeling = "happy";
+                        feeling = Feeling.HAPPY;
                         break;
                     case R.id.feeling_miss:
-                        feeling = "miss";
+                        feeling = Feeling.MISS;
                         break;
                     case R.id.feeling_stifled:
-                        feeling = "stifled";
+                        feeling = Feeling.STIFLED;
                         break;
                 }
 

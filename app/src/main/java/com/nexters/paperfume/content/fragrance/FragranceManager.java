@@ -1,9 +1,11 @@
 package com.nexters.paperfume.content.fragrance;
 
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.icu.text.MessagePattern;
 import android.util.Log;
 
+import com.nexters.paperfume.R;
 import com.nexters.paperfume.enums.Feeling;
 import com.nexters.paperfume.enums.PartOfDay;
 
@@ -35,10 +37,13 @@ public class FragranceManager {
     }
 
     private AssetManager mAssetManager;
+    private Resources mResources;
     private HashMap<Feeling, HashMap< PartOfDay, HashMap< String, Vector<FragranceInfo>>>> mMapFragranceInfo = new HashMap<Feeling, HashMap<PartOfDay, HashMap< String, Vector<FragranceInfo>>>>();
 
-    public void initFragrance(AssetManager assetManager) {
+    public void initFragrance(Resources resources, AssetManager assetManager) {
+        mResources = resources;
         mAssetManager = assetManager;
+
         loadFragrance(Feeling.HAPPY, "feelings/happy.xml");
         loadFragrance(Feeling.GROOMY, "feelings/groomy.xml");
         loadFragrance(Feeling.MISS, "feelings/miss.xml");
@@ -134,16 +139,22 @@ public class FragranceManager {
         if(hmap_S_vF == null)
             return null;
 
-        Random generator = new Random();
+        Random r = new Random();
         //기분 - 시간 대에 해당하는 향기 ( Hashmap<시간,vector<향기>> ) 랜덤 선택
         Object[] values = hmap_S_vF.values().toArray();
-        int randFragranceNameIndex = generator.nextInt(values.length);
+        int randFragranceNameIndex = r.nextInt(values.length);
         Vector<FragranceInfo> vecFragranceInfo = (Vector<FragranceInfo>)values[randFragranceNameIndex];
 
         //향기 에 등록되어 있는 정보(vector)들 중 랜덤 선택 ( 배경 이미지 랜덤선택 )
-        int randFragranceInfoIndex = generator.nextInt(vecFragranceInfo.size());
+        int randFragranceInfoIndex = r.nextInt(vecFragranceInfo.size());
         FragranceInfo selectedFragranceInfo = (FragranceInfo)vecFragranceInfo.get(randFragranceInfoIndex);
 
+        //랜덤 형용사 반영
+        String[] fragranceAdjectives = mResources.getStringArray(R.array.fragrance_adjective);
+        int randFragranceAdjectiveIndex = r.nextInt(fragranceAdjectives.length);
+        selectedFragranceInfo.setAdjective( fragranceAdjectives[ randFragranceAdjectiveIndex ] );
+
+        //TODO - 랜덤으로 기록된 값은 클라이언트에 저장해 두었다가 갱신전까지 다시 활용할 수 있게 한다.
         return selectedFragranceInfo;
     }
 }
