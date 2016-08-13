@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feeling desc="우울해요">
   <day>
-    <fragrence name="바다" image_asset_path="fragrence/sea"/>
-    <fragrence name="칵테일" image_asset_path="fragrence/cocktail"/>
+    <fragrance name="바다" image_asset_path="fragrence/sea"/>
+    <fragrance name="칵테일" image_asset_path="fragrence/cocktail"/>
   </day>
   <night>
-    <fragrence name="시나몬" image_asset_path="fragrence/cinnamon"/>
-    <fragrence name="위스키" image_asset_path="fragrence/whisky"/>  
+    <fragrance name="시나몬" image_asset_path="fragrence/cinnamon"/>
+    <fragrance name="위스키" image_asset_path="fragrence/whisky"/>
   </night> 
 </feeling>
