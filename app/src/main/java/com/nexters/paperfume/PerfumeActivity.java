@@ -187,4 +187,8 @@ public class PerfumeActivity extends AppCompatActivity {
         });
     }
 
+    public void backButtonClick(View view){
+        onBackPressed();
+    }
+
 }

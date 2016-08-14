@@ -1,5 +1,15 @@
 package com.nexters.paperfume;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.nexters.paperfume.tmp.Setting;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -25,6 +35,7 @@ import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.models.RecommendBooks;
 import com.nexters.paperfume.util.SharedPreferenceManager;
+
 
 /**
  * Created by Junwoo on 2016-08-08.
@@ -123,6 +134,21 @@ public class Splash extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
+
+                SharedPreferences preferences = getSharedPreferences("paperfume",MODE_PRIVATE);
+                Gson gson = new Gson();
+                String json = preferences.getString("setting", "");
+                Log.e("Settings : ",json);
+                Setting setting = gson.fromJson(json,Setting.class);
+
+                Intent intent;
+                if(setting!=null){
+                    intent = new Intent(Splash.this,FeelingActivity.class);
+                    startActivity(intent);
+                }else{
+                    intent = new Intent(Splash.this,SettingActivity.class);
+                    startActivity(intent);
+                }
                 finish();
             }
         };
