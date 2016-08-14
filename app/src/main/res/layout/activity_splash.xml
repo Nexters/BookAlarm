@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="25.7dp"
         android:layout_marginTop="77dp"
-        android:layout_marginRight="223.7dp"
         android:text="@string/splash_text"
         android:textSize="20sp"/>
 </FrameLayout>

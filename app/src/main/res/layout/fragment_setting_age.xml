@@ -32,14 +32,25 @@
 
     <Button
         android:text="@string/next"
+        android:background="@drawable/button_custom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="139.3dp"
         android:layout_marginBottom="55.3dp"
-        android:layout_marginRight="139.3dp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/setting_age_button"
         android:textAlignment="center"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="#ffffff"/>
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_white"
+        android:onClick="backButtonClick"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="17.7dp"
+        android:id="@+id/back_button" />
 </RelativeLayout>

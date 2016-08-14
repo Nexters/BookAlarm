@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_perfume">
+
         <TextView
-            android:text="오후 3시 20분,\n당신에겐 이향이 어울려요."
-            android:textSize="25dp"
+            android:text="오후 3시 20분,\n당신에겐 바닷내음이\n나는 책이 어울려요."
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
-            android:id="@+id/textView"
-            android:gravity="center"/>
+            android:textColor="#ffffff"
+            android:gravity="start"
+            android:layout_marginLeft="145.3dp"
+            android:layout_marginTop="15.3dp"
+            android:textSize="23.3sp" />
 
         <Button
             android:text="책 추천받기"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="22dp"
             android:id="@+id/getting_books"
-            />
-
-        <TextView
-            android:text="안개냄새"
-            android:textSize="30dp"
+            android:alpha="0.6"
+            android:background="@drawable/button_custom"
+            android:textColor="#ffffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="55.3dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="97dp"
-            android:id="@+id/textView2" />
+            android:textAlignment="center"
+            android:textSize="16sp"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_white"
+        android:onClick="backButtonClick"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="17.7dp"
+        android:id="@+id/back_button" />
     </RelativeLayout>

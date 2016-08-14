@@ -7,12 +7,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
         android:gravity="start"
-        android:layout_marginStart="220dp"
-        android:layout_marginLeft="220dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginLeft="250dp"
         android:layout_marginTop="17.7dp"
-        android:layout_marginEnd="37.3dp"
-        android:layout_marginRight="37.3dp"
         android:id="@+id/setting_gender_text"
         android:text="@string/gender_question_text"
         android:textSize="23.3sp"/>
@@ -21,9 +20,8 @@
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="157dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginLeft="221dp"
+        android:layout_marginTop="250.7dp"
         android:id="@+id/setting_gender_group">
 
         <RadioButton
@@ -31,27 +29,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gender_male"
+            android:textAlignment="center"
+            android:button="@null"
+            android:textColor="@drawable/radio_text"
+            android:drawableLeft="@drawable/radio_button"
+            android:drawablePadding="9.4dp"
             android:textSize="20sp"
-            android:layout_marginBottom="25dp"/>
+            android:layout_marginBottom="45dp"/>
 
         <RadioButton
             android:id="@+id/setting_gender_female"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gender_female"
+            android:textAlignment="center"
             android:textSize="20sp"
-            android:layout_marginBottom="25dp"/>
+            android:button="@null"
+            android:textColor="@drawable/radio_text"
+            android:drawableLeft="@drawable/radio_button"
+            android:drawablePadding="9.4dp" />
 
     </RadioGroup>
 
     <Button
         android:text="@string/next"
+        android:alpha="0.6"
+        android:textColor="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_custom"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="139.3dp"
         android:layout_marginBottom="55.3dp"
-        android:layout_marginRight="139.3dp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/setting_gender_button"
         android:textAlignment="center"
         android:textSize="16sp"
