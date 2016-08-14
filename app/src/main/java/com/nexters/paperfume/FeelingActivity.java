@@ -13,7 +13,9 @@ import android.widget.RadioGroup;
 import com.google.gson.Gson;
 import com.nexters.paperfume.tmp.Setting;
 import com.nexters.paperfume.enums.Feeling;
+
 import com.nexters.paperfume.util.CustomFont;
+import com.nexters.paperfume.util.BackPressCloseHandler;
 
 import java.util.Random;
 
@@ -26,6 +28,8 @@ public class FeelingActivity extends AppCompatActivity {
     Button button;
     RadioGroup radioGroup;
     private Feeling feeling;
+    private BackPressCloseHandler backPressCloseHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +38,8 @@ public class FeelingActivity extends AppCompatActivity {
         button.setVisibility(View.INVISIBLE);
         radioGroup = (RadioGroup) findViewById(R.id.feeling_group);
         radioGroup.setOnCheckedChangeListener(radioGroup_Listner);
-/*        SharedPreferences preferences = getSharedPreferences("paperfume",MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = preferences.getString("setting", "");
-        Log.e("Settings : ",json);*/
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         //폰트 설정
         //라디오버튼에 랜덤 텍스트 입력
@@ -115,7 +117,13 @@ public class FeelingActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
+    }
+
     public void backButtonClick(View view){
-        onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 }
