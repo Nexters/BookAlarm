@@ -1,7 +1,9 @@
 package com.nexters.paperfume;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,12 +24,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nexters.paperfume.content.fragrance.FragranceInfo;
+import com.nexters.paperfume.content.fragrance.FragranceManager;
+import com.nexters.paperfume.enums.Feeling;
 import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.models.RecommendBooks;
 import com.nexters.paperfume.tmp.Book;
+import com.nexters.paperfume.util.BitmapBlur;
 import com.nexters.paperfume.util.SecretTextView;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import me.crosswall.lib.coverflow.CoverFlow;
 import me.crosswall.lib.coverflow.core.LinkagePagerContainer;
@@ -36,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     SecretTextView text;
     LinkagePager cover;
     PagerAdapter coverAdapter;
+    LinearLayout mainBack;
+    TextView reSetting;
+
     int endPage; // 마지막 선택
     int otherPage[];
     boolean first;
@@ -43,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> BookAuthor;
     ArrayList<String> imageURL;
     ArrayList<String> info;
+
+    Feeling feeling;
+    FragranceInfo fragranceInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +108,39 @@ public class MainActivity extends AppCompatActivity {
         info = getIntent().getStringArrayListExtra("info");
 
 
+        mainBack = (LinearLayout)findViewById(R.id.mainBack);
+
+        feeling = (Feeling)getIntent().getSerializableExtra("back");
+
+        fragranceInfo = FragranceManager.getInstance().getFragrance(feeling);
+
+        try {
+            Drawable d = Drawable.createFromStream(getAssets().open(fragranceInfo.getImageAsset()), null);
+            BitmapDrawable bd = (BitmapDrawable)d;
+            Bitmap normal = bd.getBitmap();
+            Bitmap result = BitmapBlur.getInstance().blur(getApplicationContext(),normal,25);
+
+            Drawable blurD = new BitmapDrawable(getResources(), result);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mainBack.setBackground(blurD);
+            } else {
+                mainBack.setBackgroundDrawable(blurD);
+            }
+        }
+        catch (IOException ioe){
+
+        }
+        reSetting = (TextView)findViewById(R.id.reSetting);
+
+        reSetting.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent reset = new Intent(MainActivity.this,SettingActivity.class);
+                startActivity(reset);
+                finish(); // 뒤로 돌아 갈 수 있게 할지 고민..
+            }
+        });
     }
 
     @Override
@@ -102,7 +152,12 @@ public class MainActivity extends AppCompatActivity {
             text.show();
 
             if(first) {
-                text.setText("오후 3시 30분의\n우울한 당신에겐\n이 세권의 책을 추천할게요.");
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("aa K시 mm분");
+
+                String sFragranceMain = getResources().getString(R.string.format_fragrance_main, dateFormat.format(cal.getTime()), feeling.toMeans());
+
+                text.setText(sFragranceMain);
                 text.setDuration(2000);
             }else{
                 cover.getChildAt(otherPage[0]).setVisibility(View.VISIBLE);
@@ -181,13 +236,9 @@ public class MainActivity extends AppCompatActivity {
             ImageView image = (ImageView)view.findViewById(R.id.imageView);
             TextView title = (TextView)view.findViewById(R.id.textView);
             TextView author = (TextView)view.findViewById(R.id.textView2);
-            Drawable drawable;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                drawable = getResources().getDrawable(Book.image[position], getTheme());
-            } else {
-                drawable = getResources().getDrawable(Book.image[position]);
-            }
-            Glide.with(MainActivity.this).load(imageURL.get(position).trim()).into(image);
+
+            Glide.with(MainActivity.this).load(imageURL.get(position).trim()).override(180, 250).into(image);
+
             title.setText(BookTitle.get(position));
             author.setText(BookAuthor.get(position));
             title.setTextColor(Color.WHITE);

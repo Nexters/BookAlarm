@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainBack"
     android:orientation="vertical"
     android:background="@drawable/back"
 
@@ -11,6 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
+        <TextView
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:id="@+id/reSetting"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/white"
+            android:text="reset"
+            android:textSize="14sp"
+            android:gravity="center"/>
+
         <com.nexters.paperfume.util.SecretTextView
             android:id="@+id/text"
             android:layout_width="250dp"
@@ -18,8 +33,9 @@
             android:layout_marginTop="30dp"
             android:textSize="20sp"
             android:textColor="#FFFFFF"
-            android:paddingTop="30dp"
             android:textAlignment="center"
+            android:gravity="center"
+            android:paddingTop="30dp"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 

@@ -168,6 +168,7 @@ public class PerfumeActivity extends AppCompatActivity {
                                                     mainIntent.putExtra("author", author);
                                                     mainIntent.putExtra("imageURL", imageURL);
                                                     mainIntent.putExtra("info", info);
+                                                    mainIntent.putExtra("back",intentedFeeling);
                                                     startActivity(mainIntent);
                                                     finish();
                                                 }

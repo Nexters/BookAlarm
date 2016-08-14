@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nexters.paperfume.tmp.Book;
+import com.nexters.paperfume.util.BitmapBlur;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -47,7 +48,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
         Bitmap normal = BitmapFactory.decodeResource(getResources(), Book.image[position]);
-        Bitmap result = blur(getApplicationContext(),normal,25);
+        Bitmap result = BitmapBlur.blur(getApplicationContext(),normal,25);
 
         Drawable blurD = new BitmapDrawable(getResources(), result);
 
@@ -81,23 +82,5 @@ public class DetailActivity extends AppCompatActivity {
                 "---「5장」중에서");
         detailText.setTextColor(Color.BLACK);
         root.bringChildToFront(detailCover);
-    }
-    public static Bitmap blur(Context context, Bitmap sentBitmap, int radius) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
-            Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
-
-            final RenderScript rs = RenderScript.create(context);
-            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
-                    Allocation.USAGE_SCRIPT);
-            final Allocation output = Allocation.createTyped(rs, input.getType());
-            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-            script.setRadius(radius); //0.0f ~ 25.0f
-            script.setInput(input);
-            script.forEach(output);
-            output.copyTo(bitmap);
-            return bitmap;
-        }else{
-            return sentBitmap;
-        }
     }
 }
