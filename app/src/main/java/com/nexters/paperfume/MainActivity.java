@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +25,8 @@ import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.models.RecommendBooks;
 import com.nexters.paperfume.tmp.Book;
 import com.nexters.paperfume.util.SecretTextView;
+
+import java.util.ArrayList;
 
 import me.crosswall.lib.coverflow.CoverFlow;
 import me.crosswall.lib.coverflow.core.LinkagePagerContainer;
@@ -36,11 +39,10 @@ public class MainActivity extends AppCompatActivity {
     int endPage; // 마지막 선택
     int otherPage[];
     boolean first;
-    private String BookTitle[] = new String[3];
-    private String BookAuthor[] = new String[3];
-    private String imageURL[] = new String[3];
-    private String info[] = new String[3];
-
+    ArrayList<String> BookTitle;
+    ArrayList<String> BookAuthor;
+    ArrayList<String> imageURL;
+    ArrayList<String> info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,11 +84,14 @@ public class MainActivity extends AppCompatActivity {
                         processLoginFail();
                     }
                 } );
-        Intent intent = getIntent();
-        BookTitle = intent.getStringArrayExtra("title");
-        BookAuthor = intent.getStringArrayExtra("author");
-        imageURL = intent.getStringArrayExtra("imageURL");
-        info = intent.getStringArrayExtra("info");
+        BookTitle = getIntent().getStringArrayListExtra("title");//그냥 배열로 넘기는거 list로 넘기는거 왜 안되는지!
+        BookAuthor = getIntent().getStringArrayListExtra("author");
+        imageURL = getIntent().getStringArrayListExtra("imageURL");
+        Log.e("image",imageURL.toString());
+        info = getIntent().getStringArrayListExtra("info");
+
+
+
     }
 
     @Override
@@ -183,9 +188,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 drawable = getResources().getDrawable(Book.image[position]);
             }
-            image.setImageDrawable(drawable);
-            title.setText(Book.title[position]);
-            author.setText(Book.author[position]);
+            Glide.with(MainActivity.this).load(imageURL.get(position).trim()).into(image);
+            title.setText(BookTitle.get(position));
+            author.setText(BookAuthor.get(position));
             title.setTextColor(Color.WHITE);
             author.setTextColor(Color.WHITE);
 
