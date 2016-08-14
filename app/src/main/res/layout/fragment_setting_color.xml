@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/setting_color_text"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="90dp"
         android:layout_centerInParent="true"
         android:id="@+id/setting_color_group">
         <RadioGroup
@@ -37,7 +37,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_purple"
                 android:text="@string/color_purple"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:textSize="20sp" />
 
             <RadioButton
@@ -45,7 +48,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_blue"
                 android:text="@string/color_blue"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:textSize="20sp"
                 android:layout_marginTop="50dp"/>
             <RadioButton
@@ -53,7 +59,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_pink"
                 android:text="@string/color_pink"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:textSize="20sp"
                 android:layout_marginTop="50dp"/>
         </RadioGroup>
@@ -69,7 +78,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_black"
                 android:text="@string/color_black"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:textSize="20sp" />
 
             <RadioButton
@@ -78,7 +90,10 @@
                 android:id="@+id/setting_color_sky"
                 android:text="@string/color_sky"
                 android:textSize="20sp"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:layout_marginTop="50dp"/>
 
             <RadioButton
@@ -87,7 +102,10 @@
                 android:id="@+id/setting_color_red"
                 android:text="@string/color_red"
                 android:textSize="20sp"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:layout_marginTop="50dp"/>
         </RadioGroup>
         <RadioGroup
@@ -101,7 +119,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_green"
                 android:text="@string/color_green"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:textSize="20sp"/>
 
             <RadioButton
@@ -109,7 +130,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_yelow"
                 android:text="@string/color_yellow"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:textSize="20sp"
                 android:layout_marginTop="50dp"/>
 
@@ -118,7 +142,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setting_color_white"
                 android:text="@string/color_white"
-                android:textColor="#FFFFFF"
+                android:button="@null"
+                android:textColor="@drawable/radio_text1"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="9.4dp"
                 android:textSize="20sp"
                 android:layout_marginTop="50dp"/>
         </RadioGroup>
@@ -126,14 +153,26 @@
 
     <Button
         android:text="@string/next"
+        android:alpha="0.6"
+        android:background="@drawable/button_custom"
+        android:textColor="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="139.3dp"
         android:layout_marginBottom="55.3dp"
-        android:layout_marginRight="139.3dp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/setting_color_button"
         android:textAlignment="center"
         android:textSize="16sp" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_white"
+        android:onClick="backButtonClick"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="17.7dp"
+        android:id="@+id/back_button" />
 </RelativeLayout>

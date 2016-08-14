@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,10 @@ public class BloodSettingFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_setting_blood, container, false);
         button = (Button)view.findViewById(R.id.setting_blood_button);
         radioGroup = (RadioGroup) view.findViewById(R.id.setting_blood_group);
+        Log.e("View.INVISIBLE",String.valueOf(View.INVISIBLE));
+        button.setVisibility(View.INVISIBLE);
 
+        radioGroup.setOnCheckedChangeListener(radioGroup_Listner);
         button.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -49,6 +54,16 @@ public class BloodSettingFragment extends Fragment{
         });
         return view;
     }
+
+    RadioGroup.OnCheckedChangeListener radioGroup_Listner = new RadioGroup.OnCheckedChangeListener(){
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, int i) {
+            if(i != -1 ){
+                Log.e("View.VISIBLE",String.valueOf(View.VISIBLE));
+                button.setVisibility(View.VISIBLE);
+            }
+        }
+    };
 
     @Override
     public void onAttach(Activity activity) {

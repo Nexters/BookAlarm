@@ -2,12 +2,11 @@ package com.nexters.paperfume.content.fragrance;
 
 import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.icu.text.MessagePattern;
-import android.util.Log;
 
 import com.nexters.paperfume.R;
 import com.nexters.paperfume.enums.Feeling;
 import com.nexters.paperfume.enums.PartOfDay;
+import com.nexters.paperfume.util.SharedPreferenceManager;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -15,9 +14,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Time;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
@@ -35,6 +32,12 @@ public class FragranceManager {
     private FragranceManager() {
 
     }
+
+    public static final String KEY_LAST_FRAGRANCE_TIMESTAMP = "LAST_FRAGRANCE_TIMESTAMP";       //마지막 향 정보 획득 시간
+    public static final String KEY_LAST_FRAGRANCE_FEELING = "LAST_FRAGRANCE_FEELING" ;          //SharedFragrance에서 향 구분을 위해 사용할 키 값
+    public static final String KEY_LAST_FRAGRANCE_NAME_INDEX = "LAST_FRAGRANCE_NAME_INDEX" ;    //향 이름 인덱스
+    public static final String KEY_LAST_FRAGRANCE_INFO_INDEX = "LAST_FRAGRANCE_INFO_INDEX" ;    //향 - 리스트 인덱스
+    public static final String KEY_LAST_FRAGRANCE_ADJECTIVE_INDEX = "LAST_FRAGRANCE_ADJECTIVE_INDEX" ;    //형용사 인덱스
 
     private AssetManager mAssetManager;
     private Resources mResources;
@@ -118,7 +121,33 @@ public class FragranceManager {
 
     public FragranceInfo getFragrance(Feeling feeling) {
 
-        long timestamp = System.currentTimeMillis() / 1000;
+        int currtimestamp = (int)System.currentTimeMillis() / 1000;
+        int prevTimestamp =  SharedPreferenceManager.getInstance().getInt(KEY_LAST_FRAGRANCE_TIMESTAMP);
+        SharedPreferenceManager.getInstance().setInt(KEY_LAST_FRAGRANCE_TIMESTAMP, currtimestamp);
+
+        Boolean refreshFragrancePreference = false;
+        int randFragranceNameIndex = -1;
+        int randFragranceInfoIndex = -1;
+        int randFragranceAdjectiveIndex = -1;
+
+        int curr3HourUnit =  currtimestamp / ( 60 * 60 * 3);
+        int prev3HourUnit =  prevTimestamp / ( 60 * 60 * 3);
+
+        //3시간 단위로 선택한 향기 리셋
+        if(curr3HourUnit != prev3HourUnit) {
+            resetFragrancePreference();
+            refreshFragrancePreference = true;
+        }
+        else {
+            randFragranceNameIndex = SharedPreferenceManager.getInstance().getInt(KEY_LAST_FRAGRANCE_NAME_INDEX + "_" + feeling.toString());
+            randFragranceInfoIndex = SharedPreferenceManager.getInstance().getInt(KEY_LAST_FRAGRANCE_INFO_INDEX + "_" + feeling.toString());
+            randFragranceAdjectiveIndex = SharedPreferenceManager.getInstance().getInt(KEY_LAST_FRAGRANCE_ADJECTIVE_INDEX + "_" + feeling.toString());
+
+            //하나라도 초기화 된 값이라면 FragrancePreference 갱신
+            if(randFragranceNameIndex == -1 || randFragranceInfoIndex == -1 || randFragranceAdjectiveIndex == -1 )
+                refreshFragrancePreference = true;
+        }
+
         Calendar cal = Calendar.getInstance();
         int Hour24=cal.get(Calendar.HOUR_OF_DAY);
 
@@ -142,19 +171,66 @@ public class FragranceManager {
         Random r = new Random();
         //기분 - 시간 대에 해당하는 향기 ( Hashmap<시간,vector<향기>> ) 랜덤 선택
         Object[] values = hmap_S_vF.values().toArray();
-        int randFragranceNameIndex = r.nextInt(values.length);
+        if(randFragranceNameIndex == -1 ) {
+            randFragranceNameIndex = r.nextInt(values.length);
+        }
+        if(randFragranceNameIndex >= values.length ) {
+            refreshFragrancePreference = true;
+            randFragranceNameIndex = values.length - 1;
+        }
         Vector<FragranceInfo> vecFragranceInfo = (Vector<FragranceInfo>)values[randFragranceNameIndex];
 
         //향기 에 등록되어 있는 정보(vector)들 중 랜덤 선택 ( 배경 이미지 랜덤선택 )
-        int randFragranceInfoIndex = r.nextInt(vecFragranceInfo.size());
+        if(randFragranceInfoIndex == -1 ) {
+            randFragranceInfoIndex = r.nextInt(vecFragranceInfo.size());
+        }
+        if(randFragranceInfoIndex >= vecFragranceInfo.size() ) {
+            refreshFragrancePreference = true;
+            randFragranceInfoIndex = vecFragranceInfo.size() - 1;
+        }
         FragranceInfo selectedFragranceInfo = (FragranceInfo)vecFragranceInfo.get(randFragranceInfoIndex);
 
         //랜덤 형용사 반영
         String[] fragranceAdjectives = mResources.getStringArray(R.array.fragrance_adjective);
-        int randFragranceAdjectiveIndex = r.nextInt(fragranceAdjectives.length);
+        if(randFragranceAdjectiveIndex == -1 ) {
+            randFragranceAdjectiveIndex = r.nextInt(fragranceAdjectives.length);
+        }
+        if(randFragranceAdjectiveIndex >= fragranceAdjectives.length ) {
+            refreshFragrancePreference = true;
+            randFragranceAdjectiveIndex = fragranceAdjectives.length - 1;
+        }
         selectedFragranceInfo.setAdjective( fragranceAdjectives[ randFragranceAdjectiveIndex ] );
 
-        //TODO - 랜덤으로 기록된 값은 클라이언트에 저장해 두었다가 갱신전까지 다시 활용할 수 있게 한다.
+        //SharedPreference에 기록
+        if( refreshFragrancePreference == true ) {
+            SharedPreferenceManager.getInstance().setBoolean(KEY_LAST_FRAGRANCE_FEELING + "_" + feeling.toString(), true);
+            SharedPreferenceManager.getInstance().setInt(KEY_LAST_FRAGRANCE_NAME_INDEX + "_" + feeling.toString(), randFragranceNameIndex);
+            SharedPreferenceManager.getInstance().setInt(KEY_LAST_FRAGRANCE_INFO_INDEX + "_" + feeling.toString(), randFragranceInfoIndex);
+            SharedPreferenceManager.getInstance().setInt(KEY_LAST_FRAGRANCE_ADJECTIVE_INDEX + "_" + feeling.toString(), randFragranceAdjectiveIndex);
+        }
+
         return selectedFragranceInfo;
+    }
+
+    private void resetFragrancePreference(){
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_FEELING + "_" + Feeling.HAPPY.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_NAME_INDEX + "_" + Feeling.HAPPY.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_INFO_INDEX + "_" + Feeling.HAPPY.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_ADJECTIVE_INDEX + "_" + Feeling.HAPPY.toString());
+
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_FEELING + "_" + Feeling.MISS.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_NAME_INDEX + "_" + Feeling.MISS.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_INFO_INDEX + "_" + Feeling.MISS.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_ADJECTIVE_INDEX + "_" + Feeling.MISS.toString());
+
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_FEELING + "_" + Feeling.GROOMY.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_NAME_INDEX + "_" + Feeling.GROOMY.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_INFO_INDEX + "_" + Feeling.GROOMY.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_ADJECTIVE_INDEX + "_" + Feeling.GROOMY.toString());
+
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_FEELING + "_" + Feeling.STIFLED.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_NAME_INDEX + "_" + Feeling.STIFLED.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_INFO_INDEX + "_" + Feeling.STIFLED.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE_ADJECTIVE_INDEX + "_" + Feeling.STIFLED.toString());
     }
 }

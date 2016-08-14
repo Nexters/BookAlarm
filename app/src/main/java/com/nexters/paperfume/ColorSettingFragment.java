@@ -34,7 +34,9 @@ public class ColorSettingFragment extends Fragment{
         radioGroup2.setOnCheckedChangeListener(radioGroup2_Listner);
         radioGroup3 = (RadioGroup)view.findViewById(R.id.setting_color_group3);
         radioGroup3.setOnCheckedChangeListener(radioGroup3_Listner);
-        Button button = (Button)view.findViewById(R.id.setting_color_button);
+        button = (Button)view.findViewById(R.id.setting_color_button);
+        button.setVisibility(View.INVISIBLE);
+
         button.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -77,6 +79,7 @@ public class ColorSettingFragment extends Fragment{
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
             if(i != -1 && isChecking){
+                button.setVisibility(View.VISIBLE);
                 isChecking = false;
                 radioGroup2.setOnCheckedChangeListener(null);
                 radioGroup3.setOnCheckedChangeListener(null);
@@ -94,6 +97,7 @@ public class ColorSettingFragment extends Fragment{
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
             if(i != -1 && isChecking){
+                button.setVisibility(View.VISIBLE);
                 isChecking = false;
                 radioGroup1.setOnCheckedChangeListener(null);
                 radioGroup3.setOnCheckedChangeListener(null);
@@ -111,6 +115,7 @@ public class ColorSettingFragment extends Fragment{
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
             if(i != -1 && isChecking){
+                button.setVisibility(View.VISIBLE);
                 isChecking = false;
                 radioGroup2.setOnCheckedChangeListener(null);
                 radioGroup1.setOnCheckedChangeListener(null);

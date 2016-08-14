@@ -23,6 +23,7 @@ import com.google.firebase.storage.StorageReference;
 import com.nexters.paperfume.content.fragrance.FragranceInfo;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.enums.Feeling;
+import com.nexters.paperfume.util.CustomFont;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +72,10 @@ public class PerfumeActivity extends AppCompatActivity {
         TextView fragranceGuide = (TextView) findViewById(R.id.fragrance_guide);
 
         FragranceInfo fragranceInfo = FragranceManager.getInstance().getFragrance(intentedFeeling);
+
+        //폰트 설정
+        button.setTypeface(CustomFont.getInstance().getTypeface());
+        fragranceGuide.setTypeface(CustomFont.getInstance().getTypeface());
 
         //배경화면 설정
         try {
@@ -205,6 +210,10 @@ public class PerfumeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void backButtonClick(View view){
+        onBackPressed();
     }
 
 }
