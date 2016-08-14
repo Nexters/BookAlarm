@@ -1,5 +1,6 @@
 package com.nexters.paperfume.firebase;
 
+
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -20,6 +21,7 @@ public class Firebase {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser = null;
+    private boolean mLoggedIn = false;
 
     public static Firebase getInstance(){
         if(mInstance == null){
@@ -28,8 +30,11 @@ public class Firebase {
         return mInstance;
     }
 
-    public FirebaseUser getUser() {
-        return mUser;
+    public String getUserUid() {
+        if(mUser == null)
+            return null;
+        else
+            return mUser.getUid();
     }
 
     private Firebase() {
@@ -55,17 +60,21 @@ public class Firebase {
 
     }
 
-    public void login() {
+    public void login(final Runnable success, final Runnable failed) {
         mAuth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
-
+                if(task.isSuccessful()){
+                    mLoggedIn = true;
+                    success.run();
+                }
                 if (!task.isSuccessful()) {
+                    mLoggedIn = false;
+                    failed.run();
                     Log.w(TAG, "signInAnonymously", task.getException());
                 }
             }
         });
     }
-
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feeling desc="그리워요">
+  <day>
+    <fragrance name="라일락" image_asset_path="fragrence/lilac"/>
+    <fragrance name="아이리스" image_asset_path="fragrence/iris"/>
+  </day>
+  <night>
+    <fragrance name="은하수" image_asset_path="fragrence/milkyway"/>
+    <fragrance name="커피" image_asset_path="fragrence/coffee"/>
+  </night> 
+</feeling>

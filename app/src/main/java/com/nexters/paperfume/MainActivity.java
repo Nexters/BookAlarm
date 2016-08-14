@@ -1,15 +1,13 @@
 package com.nexters.paperfume;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.view.LinkagePager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nexters.paperfume.firebase.Firebase;
-import com.nexters.paperfume.util.SecretTextView;
+import com.nexters.paperfume.models.RecommendBooks;
 import com.nexters.paperfume.tmp.Book;
+import com.nexters.paperfume.util.SecretTextView;
 
 import me.crosswall.lib.coverflow.CoverFlow;
 import me.crosswall.lib.coverflow.core.LinkagePagerContainer;
@@ -32,7 +36,10 @@ public class MainActivity extends AppCompatActivity {
     int endPage; // 마지막 선택
     int otherPage[];
     boolean first;
-
+    private String BookTitle[] = new String[3];
+    private String BookAuthor[] = new String[3];
+    private String imageURL[] = new String[3];
+    private String info[] = new String[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,25 @@ public class MainActivity extends AppCompatActivity {
         first=true;
 
         //Firebase 로그인
-        Firebase.getInstance().login();
+        //successMethod 에서 로그인 완료처리..여기서 책 데이터 도 로딩..
+        Firebase.getInstance().login(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        processLoginSuccess();
+                    }
+                },
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        processLoginFail();
+                    }
+                } );
+        Intent intent = getIntent();
+        BookTitle = intent.getStringArrayExtra("title");
+        BookAuthor = intent.getStringArrayExtra("author");
+        imageURL = intent.getStringArrayExtra("imageURL");
+        info = intent.getStringArrayExtra("info");
     }
 
     @Override
@@ -190,4 +215,41 @@ public class MainActivity extends AppCompatActivity {
             otherPage[1]=1;
         }
     }
+
+    private void processLoginSuccess(){
+        //로그인 성공에 대한 처리
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("recommend_books/by_feeling");
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        RecommendBooks rbook = dataSnapshot.getValue(RecommendBooks.class);
+
+                        RecommendBooks.getInstance().getHappy().clear();
+                        RecommendBooks.getInstance().getHappy().addAll(rbook.getHappy());
+
+                        RecommendBooks.getInstance().getMiss().clear();
+                        RecommendBooks.getInstance().getMiss().addAll(rbook.getMiss());
+
+                        RecommendBooks.getInstance().getGroomy().clear();
+                        RecommendBooks.getInstance().getGroomy().addAll(rbook.getGroomy());
+
+                        RecommendBooks.getInstance().getStifled().clear();
+                        RecommendBooks.getInstance().getStifled().addAll(rbook.getStifled());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //TODO
+                    }
+                }
+        );
+    }
+
+    private void processLoginFail(){
+        //로그인 실패에 대한 처리 ( 네트워크 연결 실패 )
+        Log.d("Paperfume", "processLoginFailed");
+    }
+
 }

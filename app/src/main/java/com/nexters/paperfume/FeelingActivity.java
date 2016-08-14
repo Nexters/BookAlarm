@@ -7,10 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
 import com.nexters.paperfume.tmp.Setting;
+import com.nexters.paperfume.enums.Feeling;
+
+import java.util.Random;
+
 
 /**
  * Created by user on 2016-07-27.
@@ -19,7 +24,7 @@ import com.nexters.paperfume.tmp.Setting;
 public class FeelingActivity extends AppCompatActivity {
     Button button;
     RadioGroup radioGroup;
-    private String feeling;
+    private Feeling feeling;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,27 +38,63 @@ public class FeelingActivity extends AppCompatActivity {
         String json = preferences.getString("setting", "");
         Log.e("Settings : ",json);*/
 
+        //라디오버튼에 랜덤 텍스트 입력
+        {
+            Random r = new Random();
+            RadioButton radioButton = null;
+            String[] sentences = null;
+            int index;
+
+            for(int i = 0 ; i < 4 ; i++)
+            {
+                switch(i) {
+                    case 0:
+                        radioButton = (RadioButton) findViewById(R.id.feeling_happy);
+                        sentences = getResources().getStringArray(R.array.feeling_happy);
+                        break;
+                    case 1:
+                        radioButton = (RadioButton) findViewById(R.id.feeling_miss);
+                        sentences = getResources().getStringArray(R.array.feeling_miss);
+                        break;
+                    case 2:
+                        radioButton = (RadioButton) findViewById(R.id.feeling_groomy);
+                        sentences = getResources().getStringArray(R.array.feeling_groomy);
+                        break;
+                    case 3:
+                        radioButton = (RadioButton) findViewById(R.id.feeling_stifled);
+                        sentences = getResources().getStringArray(R.array.feeling_stifled);
+                        break;
+                }
+
+                if(radioButton != null) {
+                    index = r.nextInt(sentences.length);
+                    radioButton.setText(sentences[index]);
+                }
+            }
+        }
+
         button.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
                 switch (radioGroup.getCheckedRadioButtonId()) {
                     case R.id.feeling_groomy:
-                        feeling = "groomy";
+                        feeling = Feeling.GROOMY;
                         break;
                     case R.id.feeling_happy:
-                        feeling = "happy";
+                        feeling = Feeling.HAPPY;
                         break;
                     case R.id.feeling_miss:
-                        feeling = "miss";
+                        feeling = Feeling.MISS;
                         break;
                     case R.id.feeling_stifled:
-                        feeling = "stifled";
+                        feeling = Feeling.STIFLED;
                         break;
                 }
 
                 //Selected feelings post to server
 
                 Intent intent = new Intent(FeelingActivity.this, PerfumeActivity.class);
+                intent.putExtra("feeling",feeling);
                 //intent.putExtra() //Perpume data
                 startActivity(intent);
             }

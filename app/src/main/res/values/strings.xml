@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Paperfume</string>
-    <string name="splash_text">지친 당신에게\n책 냄새를\n선물할게요.</string>
+    <string name="splash_text">지친 당신에게 책 냄새를 선물할게요.</string>
     <string name="gender_question_text">성별이\n뭐에요?</string>
     <string name="gender_male">남자에요</string>
     <string name="gender_female">여자에요</string>
@@ -20,7 +20,10 @@
     <string name="color_red">빨강</string>
     <string name="color_pink">분홍</string>
     <string name="color_white">하양</string>
+    <string name="feeling_question_text">지금 기분\n어때요?</string>
     <string name="next">다음</string>
 
     <string name="title_activity_detail">Detail</string>
+
+    <string name="foramt_fragrance_guide">%1$s 의 %2$s 당신에겐 %3$s%4$4s향이 나는 책이 어울려요</string>
 </resources>
