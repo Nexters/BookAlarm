@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -69,7 +70,7 @@ public class PerfumeActivity extends AppCompatActivity {
         intentedFeeling = (Feeling)intent.getSerializableExtra("feeling");
 
         setContentView(R.layout.activity_perfume);
-        RelativeLayout layout =(RelativeLayout)findViewById(R.id.layout_activity_perfume);
+        View imageView = findViewById(R.id.image_activity_perfume);
         button = (Button) findViewById(R.id.getting_books);
         TextView fragranceGuide = (TextView)findViewById(R.id.fragrance_guide);
 
@@ -78,10 +79,11 @@ public class PerfumeActivity extends AppCompatActivity {
         //배경화면 설정
         try {
             Drawable d = Drawable.createFromStream(getAssets().open(fragranceInfo.getImageAsset()), null);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                layout.setBackground(d);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                imageView.setBackground(d);
             } else {
-                layout.setBackgroundDrawable(d);
+                imageView.setBackgroundDrawable(d);
             }
         }
         catch (IOException ioe){

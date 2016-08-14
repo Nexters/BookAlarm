@@ -5,7 +5,7 @@
     <fragrance name="장미" image_asset_path="fragrence/rose"/>
   </day>
   <night>
-    <fragrance name="종이" image_asset_path="fragrence/paper"/>
+    <fragrance name="종이" image_asset_path="fragrence/book"/>
     <fragrance name="호수" image_asset_path="fragrence/lake"/>
   </night> 
 </feeling>
