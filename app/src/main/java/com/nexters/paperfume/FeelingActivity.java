@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import com.google.gson.Gson;
 import com.nexters.paperfume.tmp.Setting;
 import com.nexters.paperfume.enums.Feeling;
+import com.nexters.paperfume.util.CustomFont;
 
 import java.util.Random;
 
@@ -38,6 +39,7 @@ public class FeelingActivity extends AppCompatActivity {
         String json = preferences.getString("setting", "");
         Log.e("Settings : ",json);*/
 
+        //폰트 설정
         //라디오버튼에 랜덤 텍스트 입력
         {
             Random r = new Random();
@@ -69,6 +71,9 @@ public class FeelingActivity extends AppCompatActivity {
                 if(radioButton != null) {
                     index = r.nextInt(sentences.length);
                     radioButton.setText(sentences[index]);
+                    //폰트 설정
+                    radioButton.setTypeface(CustomFont.getInstance().getTypeface());
+
                 }
             }
         }

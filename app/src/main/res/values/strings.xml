@@ -25,5 +25,5 @@
 
     <string name="title_activity_detail">Detail</string>
 
-    <string name="foramt_fragrance_guide">%1$s 의 %2$s 당신에겐 %3$s%4$4s향이 나는 책이 어울려요</string>
+    <string name="foramt_fragrance_guide">%1$s 의 %2$s 당신에겐 %3$s %4$s향이 나는 책이 어울려요</string>
 </resources>

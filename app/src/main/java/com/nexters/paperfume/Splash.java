@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.models.RecommendBooks;
+import com.nexters.paperfume.util.CustomFont;
 import com.nexters.paperfume.util.SharedPreferenceManager;
 
 
@@ -157,6 +158,8 @@ public class Splash extends AppCompatActivity {
         SharedPreferenceManager.getInstance().init(getApplicationContext());
         //FragranceManager 초기화
         FragranceManager.getInstance().initFragrance(getResources(), getAssets());
+        //CustomFont 초기화
+        CustomFont.getInstance().init(getAssets());
 
         //Firebase 로그인
         //successMethod 에서 로그인 완료처리..여기서 책 데이터 도 로딩..
