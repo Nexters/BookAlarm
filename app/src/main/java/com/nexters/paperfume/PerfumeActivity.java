@@ -1,5 +1,6 @@
 package com.nexters.paperfume;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -58,6 +59,7 @@ public class PerfumeActivity extends AppCompatActivity {
     private ArrayList<String> info = new ArrayList<>();
     private JSONObject jsonObject;
     private Feeling intentedFeeling;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,7 @@ public class PerfumeActivity extends AppCompatActivity {
         button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog = ProgressDialog.show(PerfumeActivity.this, "","책을 받아오는 중입니다 잠시만 기다려주세요.",true);
                 //Selected feelings post to server
                 String strFeeling = intentedFeeling.toString();
                 myRef.child("by_feeling").child(intentedFeeling.toString()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -159,6 +162,7 @@ public class PerfumeActivity extends AppCompatActivity {
                                                 info.add(jsonObject.getString("introduce"));
                                                 Log.e("title", title.toString());
                                                 if (info.size() >= 3) {
+                                                    dialog.dismiss();
                                                     Intent mainIntent = new Intent(PerfumeActivity.this, MainActivity.class);
                                                     mainIntent.putExtra("title",title);
                                                     mainIntent.putExtra("author", author);

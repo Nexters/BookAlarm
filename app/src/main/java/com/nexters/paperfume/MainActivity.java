@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         //책 이미지 페이저 등록
         LinkagePagerContainer bContainer = (LinkagePagerContainer)findViewById(R.id.book_container);
         cover = bContainer.getViewPager();
-
         coverAdapter = new BookAdapter();
         cover.setAdapter(coverAdapter);
+
         cover.setOffscreenPageLimit(coverAdapter.getCount());
 
         new CoverFlow.Builder()
@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         imageURL = getIntent().getStringArrayListExtra("imageURL");
         Log.e("image",imageURL.toString());
         info = getIntent().getStringArrayListExtra("info");
-
 
 
     }
@@ -195,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
             author.setTextColor(Color.WHITE);
 
             container.addView(view);
+
             return view;
         }
         @Override
