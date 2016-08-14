@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -15,10 +16,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.nexters.paperfume.content.fragrance.FragranceManager;
+import com.nexters.paperfume.firebase.Firebase;
+import com.nexters.paperfume.models.RecommendBooks;
+
 /**
  * Created by Junwoo on 2016-08-08.
  */
 public class Splash extends AppCompatActivity {
+    public static final String  TAG = "SPLASH";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +125,62 @@ public class Splash extends AppCompatActivity {
                 finish();
             }
         };
+
+        //FragranceManager 초기화
+        FragranceManager.getInstance().initFragrance(getResources(), getAssets());
+
+        //Firebase 로그인
+        //successMethod 에서 로그인 완료처리..여기서 책 데이터 도 로딩..
+        Firebase.getInstance().login(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        processLoginSuccess();
+                    }
+                },
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        processLoginFail();
+                    }
+                } );
+
         handler.sendEmptyMessageDelayed(0, 5000);
+    }
+
+    private void processLoginSuccess(){
+        //로그인 성공에 대한 처리
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("recommend_books/by_feeling");
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        RecommendBooks rbook = dataSnapshot.getValue(RecommendBooks.class);
+
+                        RecommendBooks.getInstance().getHappy().clear();
+                        RecommendBooks.getInstance().getHappy().addAll(rbook.getHappy());
+
+                        RecommendBooks.getInstance().getMiss().clear();
+                        RecommendBooks.getInstance().getMiss().addAll(rbook.getMiss());
+
+                        RecommendBooks.getInstance().getGroomy().clear();
+                        RecommendBooks.getInstance().getGroomy().addAll(rbook.getGroomy());
+
+                        RecommendBooks.getInstance().getStifled().clear();
+                        RecommendBooks.getInstance().getStifled().addAll(rbook.getStifled());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //TODO
+                    }
+                }
+        );
+    }
+
+    private void processLoginFail(){
+        //로그인 실패에 대한 처리 ( 네트워크 연결 실패 )
+        Log.d(TAG, "processLoginFailed");
     }
 }

@@ -1,11 +1,16 @@
 package com.nexters.paperfume;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,6 +22,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nexters.paperfume.content.fragrance.FragranceInfo;
+import com.nexters.paperfume.content.fragrance.FragranceManager;
+import com.nexters.paperfume.enums.Feeling;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +35,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -49,21 +60,52 @@ public class PerfumeActivity extends AppCompatActivity {
     String info[] = new String[3];
     JSONObject jsonObject;
     private File localFile;
+    private Feeling intentedFeeling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_perfume);
-        button = (Button) findViewById(R.id.getting_books);
+
         final Intent intent = getIntent();
+        intentedFeeling = (Feeling)intent.getSerializableExtra("feeling");
+
+        setContentView(R.layout.activity_perfume);
+        View imageView = findViewById(R.id.image_activity_perfume);
+        button = (Button) findViewById(R.id.getting_books);
+        TextView fragranceGuide = (TextView)findViewById(R.id.fragrance_guide);
+
+        FragranceInfo fragranceInfo = FragranceManager.getInstance().getFragrance(intentedFeeling);
+
+        //배경화면 설정
+        try {
+            Drawable d = Drawable.createFromStream(getAssets().open(fragranceInfo.getImageAsset()), null);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                imageView.setBackground(d);
+            } else {
+                imageView.setBackgroundDrawable(d);
+            }
+        }
+        catch (IOException ioe){
+
+        }
+
+        //문구 설정
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("aa K시 mm분");
+
+        String sFragranceGuide = getResources().getString(R.string.foramt_fragrance_guide, dateFormat.format(cal.getTime()), intentedFeeling.toMeans(), fragranceInfo.getAdjective(), fragranceInfo.getName());
+
+        fragranceGuide.setText( sFragranceGuide );
+
 
         final StorageReference storageRef = storage.getReferenceFromUrl("gs://nexters-paperfume.appspot.com");
         button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Selected feelings post to server
-
-                myRef.child("by_feeling").child(intent.getStringExtra("feeling")).addListenerForSingleValueEvent(new ValueEventListener() {
+                String strFeeling = intentedFeeling.toString();
+                myRef.child("by_feeling").child(intentedFeeling.toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         object = (List) dataSnapshot.getValue();
@@ -141,14 +183,6 @@ public class PerfumeActivity extends AppCompatActivity {
                     }
                 });
 
-                Intent intent = new Intent(PerfumeActivity.this, MainActivity.class);
-               // intent.putExtra("title", title);
-                //intent.putExtra("author", author);
-                //intent.putExtra("imageURL", imageURL);
-                //intent.putExtra("info", info);
-                //intent.putExtra() //books data
-                startActivity(intent);
-                finish();
             }
         });
     }
