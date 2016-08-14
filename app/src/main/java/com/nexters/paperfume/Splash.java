@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.models.RecommendBooks;
+import com.nexters.paperfume.util.SharedPreferenceManager;
 
 /**
  * Created by Junwoo on 2016-08-08.
@@ -126,6 +127,8 @@ public class Splash extends AppCompatActivity {
             }
         };
 
+        //SharedPreferenceManager 초기화
+        SharedPreferenceManager.getInstance().init(getApplicationContext());
         //FragranceManager 초기화
         FragranceManager.getInstance().initFragrance(getResources(), getAssets());
 
