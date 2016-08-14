@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     TextView reSetting;
 
     int endPage; // 마지막 선택
-    int otherPage[];
     boolean first;
     ArrayList<String> BookTitle;
     ArrayList<String> BookAuthor;
@@ -83,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         //처음 페이지가 중간페이지로 설정되도록.
         endPage = 1; //최초값 1
-        otherPage = new int[2];
         first=true;
 
         //Firebase 로그인
@@ -146,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if(hasFocus){
-            setOtherPage(endPage);
 
             cover.setCurrentItem(endPage,true);
             text.show();
@@ -159,25 +156,20 @@ public class MainActivity extends AppCompatActivity {
 
                 text.setText(sFragranceMain);
                 text.setDuration(2000);
-            }else{
-                cover.getChildAt(otherPage[0]).setVisibility(View.VISIBLE);
-                cover.getChildAt(otherPage[1]).setVisibility(View.VISIBLE);
-                cover.getChildAt(endPage).setVisibility(View.VISIBLE);
             }
-
 
             cover.getChildAt(0).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //animation 부분 fadeOut
                     if(cover.getCurrentItem()==0) {
-                        setOtherPage(cover.getCurrentItem());
-                        cover.getChildAt(otherPage[0]).setVisibility(View.GONE);
-                        cover.getChildAt(otherPage[1]).setVisibility(View.GONE);
                         text.hide();
 
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                        intent.putExtra("index", "0");
+                        intent.putExtra("title",BookTitle.get(0));
+                        intent.putExtra("author",BookAuthor.get(0));
+                        intent.putExtra("info",info.get(0));
+                        intent.putExtra("imageURL",imageURL.get(0));
                         endPage = 0;
                         first=false;
                         startActivity(intent);
@@ -188,14 +180,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if(cover.getCurrentItem()==1) {
-                        //animation 부분 fadeOut
-                        setOtherPage(cover.getCurrentItem());
-                        cover.getChildAt(otherPage[0]).setVisibility(View.GONE);
-                        cover.getChildAt(otherPage[1]).setVisibility(View.GONE);
                         text.hide();
 
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                        intent.putExtra("index", "1");
+                        intent.putExtra("title",BookTitle.get(1));
+                        intent.putExtra("author",BookAuthor.get(1));
+                        intent.putExtra("info",info.get(1));
+                        intent.putExtra("imageURL",imageURL.get(1));
                         endPage = 1;
                         first=false;
                         startActivity(intent);
@@ -207,13 +198,13 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if(cover.getCurrentItem()==2) {
                         //animation 부분 fadeOut
-                        setOtherPage(cover.getCurrentItem());
-                        cover.getChildAt(otherPage[0]).setVisibility(View.GONE);
-                        cover.getChildAt(otherPage[1]).setVisibility(View.GONE);
                         text.hide();
 
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                        intent.putExtra("index", "2");
+                        intent.putExtra("title",BookTitle.get(2));
+                        intent.putExtra("author",BookAuthor.get(2));
+                        intent.putExtra("info",info.get(2));
+                        intent.putExtra("imageURL",imageURL.get(2));
                         endPage = 2;
                         first=false;
                         startActivity(intent);
@@ -259,19 +250,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean isViewFromObject(View view,Object object) {return (view == object);}
     }
-    private void setOtherPage(int currentPage){
-        if(currentPage==0){
-            otherPage[0]=1;
-            otherPage[1]=2;
-        }else if(currentPage==1){
-            otherPage[0]=0;
-            otherPage[1]=2;
-        }else{
-            otherPage[0]=0;
-            otherPage[1]=1;
-        }
-    }
-
     private void processLoginSuccess(){
         //로그인 성공에 대한 처리
         FirebaseDatabase database = FirebaseDatabase.getInstance();
