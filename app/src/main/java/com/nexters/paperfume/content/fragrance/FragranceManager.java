@@ -171,16 +171,34 @@ public class FragranceManager {
         Random r = new Random();
         //기분 - 시간 대에 해당하는 향기 ( Hashmap<시간,vector<향기>> ) 랜덤 선택
         Object[] values = hmap_S_vF.values().toArray();
-        if(randFragranceNameIndex == -1 )  randFragranceNameIndex = r.nextInt(values.length);
+        if(randFragranceNameIndex == -1 ) {
+            randFragranceNameIndex = r.nextInt(values.length);
+        }
+        if(randFragranceNameIndex >= values.length ) {
+            refreshFragrancePreference = true;
+            randFragranceNameIndex = values.length - 1;
+        }
         Vector<FragranceInfo> vecFragranceInfo = (Vector<FragranceInfo>)values[randFragranceNameIndex];
 
         //향기 에 등록되어 있는 정보(vector)들 중 랜덤 선택 ( 배경 이미지 랜덤선택 )
-        if(randFragranceInfoIndex == -1 )  randFragranceInfoIndex = r.nextInt(vecFragranceInfo.size());
+        if(randFragranceInfoIndex == -1 ) {
+            randFragranceInfoIndex = r.nextInt(vecFragranceInfo.size());
+        }
+        if(randFragranceInfoIndex >= vecFragranceInfo.size() ) {
+            refreshFragrancePreference = true;
+            randFragranceInfoIndex = vecFragranceInfo.size() - 1;
+        }
         FragranceInfo selectedFragranceInfo = (FragranceInfo)vecFragranceInfo.get(randFragranceInfoIndex);
 
         //랜덤 형용사 반영
         String[] fragranceAdjectives = mResources.getStringArray(R.array.fragrance_adjective);
-        if(randFragranceAdjectiveIndex == -1 )  randFragranceAdjectiveIndex = r.nextInt(fragranceAdjectives.length);
+        if(randFragranceAdjectiveIndex == -1 ) {
+            randFragranceAdjectiveIndex = r.nextInt(fragranceAdjectives.length);
+        }
+        if(randFragranceAdjectiveIndex >= fragranceAdjectives.length ) {
+            refreshFragrancePreference = true;
+            randFragranceAdjectiveIndex = fragranceAdjectives.length - 1;
+        }
         selectedFragranceInfo.setAdjective( fragranceAdjectives[ randFragranceAdjectiveIndex ] );
 
         //SharedPreference에 기록
