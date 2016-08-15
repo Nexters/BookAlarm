@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.nexters.paperfume.util.BitmapBlur;
+import com.nexters.paperfume.util.CustomFont;
 
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
@@ -76,6 +77,9 @@ public class DetailActivity extends AppCompatActivity {
         detailText.setText(info);
         detailText.setTextColor(Color.BLACK);
         root.bringChildToFront(detailCover);
+
+        //폰트 설정
+        detailText.setTypeface(CustomFont.getInstance().getTypeface());
     }
     private class GlideBitmap extends AsyncTask<URL, Integer, Long> {
         @Override

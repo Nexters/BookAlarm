@@ -26,6 +26,7 @@ import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.enums.Feeling;
 import com.nexters.paperfume.util.CustomFont;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,7 +95,11 @@ public class PerfumeActivity extends AppCompatActivity {
 
         //문구 설정
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("aa K시 mm분");
+        SimpleDateFormat dateFormat;
+        if(cal.get(Calendar.HOUR_OF_DAY) < 12 )
+            dateFormat = new SimpleDateFormat("오전 K시 mm분");
+        else
+            dateFormat = new SimpleDateFormat("오후 K시 mm분");
 
         String sFragranceGuide = getResources().getString(R.string.foramt_fragrance_guide, dateFormat.format(cal.getTime()), intentedFeeling.toMeans(), fragranceInfo.getAdjective(), fragranceInfo.getName());
 
@@ -159,7 +164,13 @@ public class PerfumeActivity extends AppCompatActivity {
                                                 title.add(jsonObject.getString("title"));
                                                 author.add(jsonObject.getString("author"));
                                                 imageURL.add(jsonObject.getString("image"));
-                                                info.add(jsonObject.getString("introduce"));
+                                                JSONArray ja = jsonObject.getJSONArray("inside");
+                                                String insideBook = new String();
+                                                for(int i = 0 ; i < ja.length() ; i++){
+                                                    insideBook += ja.getString(i) + "\n\n";
+                                                }
+                                                info.add(insideBook);
+
                                                 Log.d("title", title.toString());
                                                 if (info.size() >= 3) {
                                                     dialog.dismiss();
