@@ -11,7 +11,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
-import com.nexters.paperfume.tmp.Setting;
 import com.nexters.paperfume.enums.Feeling;
 
 import com.nexters.paperfume.util.CustomFont;

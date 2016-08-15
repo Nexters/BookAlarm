@@ -29,7 +29,7 @@ public class GenderSettingFragment extends Fragment{
         view = inflater.inflate(R.layout.fragment_setting_gender, container, false);
         radioGroup = (RadioGroup)view.findViewById(R.id.setting_gender_group);
         button = (Button)view.findViewById(R.id.setting_gender_button);
-        Log.e("View.INVISIBLE",String.valueOf(View.INVISIBLE));
+        Log.d("View.INVISIBLE",String.valueOf(View.INVISIBLE));
         button.setVisibility(view.INVISIBLE);
 
         radioGroup.setOnCheckedChangeListener(radioGroup_Listner);
@@ -57,7 +57,7 @@ public class GenderSettingFragment extends Fragment{
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
             if(i != -1 ){
-                Log.e("View.VISIBLE",String.valueOf(View.VISIBLE));
+                Log.d("View.VISIBLE",String.valueOf(View.VISIBLE));
                 button.setVisibility(view.VISIBLE);
             }
         }

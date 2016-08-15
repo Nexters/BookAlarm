@@ -113,7 +113,7 @@ public class PerfumeActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List object = (List) dataSnapshot.getValue();
 
-                        Log.e("value", object.get(1).toString());
+                        Log.d("value", object.get(1).toString());
                         int a[] = new int[3];
                         for (int i = 0; i < 3; i++) {
                             a[i] = (int) (Math.random() * 10);
@@ -160,7 +160,7 @@ public class PerfumeActivity extends AppCompatActivity {
                                                 author.add(jsonObject.getString("author"));
                                                 imageURL.add(jsonObject.getString("image"));
                                                 info.add(jsonObject.getString("introduce"));
-                                                Log.e("title", title.toString());
+                                                Log.d("title", title.toString());
                                                 if (info.size() >= 3) {
                                                     dialog.dismiss();
                                                     Intent mainIntent = new Intent(PerfumeActivity.this, MainActivity.class);
@@ -175,7 +175,7 @@ public class PerfumeActivity extends AppCompatActivity {
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
-                                            Log.e("sb", sb.toString());
+                                            Log.d("sb", sb.toString());
 
 
                                             readBuf = null;

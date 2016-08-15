@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.nexters.paperfume.tmp.Book;
 import com.nexters.paperfume.util.BitmapBlur;
 
 import java.net.URL;
@@ -90,9 +89,9 @@ public class DetailActivity extends AppCompatActivity {
             try {
                 normal = Glide.with(DetailActivity.this).load(imageURL).asBitmap().into(180,250).get();
             } catch (final ExecutionException e) {
-                Log.e("error", e.getMessage());
+                Log.d("error", e.getMessage());
             } catch (final InterruptedException e) {
-                Log.e("error", e.getMessage());
+                Log.d("error", e.getMessage());
             }
 
             result = BitmapBlur.blur(getApplicationContext(), normal, 25);

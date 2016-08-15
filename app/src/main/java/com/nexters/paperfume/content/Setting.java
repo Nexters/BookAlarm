@@ -1,4 +1,4 @@
-package com.nexters.paperfume.tmp;
+package com.nexters.paperfume.content;
 
 /**
  * Created by user on 2016-08-06.

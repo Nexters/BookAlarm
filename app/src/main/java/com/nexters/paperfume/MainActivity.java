@@ -29,7 +29,6 @@ import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.enums.Feeling;
 import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.models.RecommendBooks;
-import com.nexters.paperfume.tmp.Book;
 import com.nexters.paperfume.util.BitmapBlur;
 import com.nexters.paperfume.util.SecretTextView;
 
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         BookTitle = getIntent().getStringArrayListExtra("title");//그냥 배열로 넘기는거 list로 넘기는거 왜 안되는지!
         BookAuthor = getIntent().getStringArrayListExtra("author");
         imageURL = getIntent().getStringArrayListExtra("imageURL");
-        Log.e("image",imageURL.toString());
+        Log.d("image",imageURL.toString());
         info = getIntent().getStringArrayListExtra("info");
 
 

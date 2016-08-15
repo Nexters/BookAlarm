@@ -8,17 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.nexters.paperfume.tmp.Setting;
+import com.nexters.paperfume.content.Setting;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -139,7 +135,7 @@ public class Splash extends AppCompatActivity {
                 SharedPreferences preferences = getSharedPreferences("paperfume",MODE_PRIVATE);
                 Gson gson = new Gson();
                 String json = preferences.getString("setting", "");
-                Log.e("Settings : ",json);
+                Log.d("Settings : ",json);
                 Setting setting = gson.fromJson(json,Setting.class);
 
                 Intent intent;
