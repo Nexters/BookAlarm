@@ -94,7 +94,7 @@ public class DetailActivity extends AppCompatActivity {
                 Log.d("error", e.getMessage());
             }
 
-            result = BitmapBlur.blur(getApplicationContext(), normal, 25);
+            result = BitmapBlur.blur(getApplicationContext(), normal, 20);
 
             blurD = new BitmapDrawable(getResources(), result);
 
