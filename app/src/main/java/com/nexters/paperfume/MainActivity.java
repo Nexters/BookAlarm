@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             Drawable d = Drawable.createFromStream(getAssets().open(fragranceInfo.getImageAsset()), null);
             BitmapDrawable bd = (BitmapDrawable)d;
             Bitmap normal = bd.getBitmap();
-            Bitmap result = BitmapBlur.getInstance().blur(getApplicationContext(),normal,25);
+            Bitmap result = BitmapBlur.getInstance().blur(getApplicationContext(),normal,20);
 
             Drawable blurD = new BitmapDrawable(getResources(), result);
 
