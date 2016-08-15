@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nexters.paperfume.content.book.MyBook;
 import com.nexters.paperfume.content.fragrance.FragranceInfo;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.enums.Feeling;
@@ -48,7 +49,6 @@ import java.util.List;
 public class PerfumeActivity extends AppCompatActivity {
     Button button;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("recommend_books");
     FirebaseStorage storage = FirebaseStorage.getInstance();
     private int buffersize = Character.MAX_VALUE;
     private int localnum = 0;
@@ -73,6 +73,12 @@ public class PerfumeActivity extends AppCompatActivity {
         View imageView = findViewById(R.id.image_activity_perfume);
         button = (Button) findViewById(R.id.getting_books);
         TextView fragranceGuide = (TextView) findViewById(R.id.fragrance_guide);
+
+        //향기 갱신시간이 되면 내 향과 내 책 리스트 초기화
+        if(FragranceManager.getInstance().checkResetFragrance()) {
+            FragranceManager.getInstance().resetFragrance();
+            MyBook.getInstance().resetMyBooks();
+        }
 
         FragranceInfo fragranceInfo = FragranceManager.getInstance().getFragrance(intentedFeeling);
 
@@ -113,7 +119,9 @@ public class PerfumeActivity extends AppCompatActivity {
                 dialog = ProgressDialog.show(PerfumeActivity.this, "","책을 받아오는 중입니다 잠시만 기다려주세요.",true);
                 //Selected feelings post to server
                 String strFeeling = intentedFeeling.toString();
-                myRef.child("by_feeling").child(intentedFeeling.toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference("recommend_books/by_feeling");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List object = (List) dataSnapshot.getValue();

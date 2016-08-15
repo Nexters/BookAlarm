@@ -1,8 +1,6 @@
 package com.nexters.paperfume;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -30,9 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nexters.paperfume.content.book.MyBook;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
+import com.nexters.paperfume.content.book.RecommendBook;
 import com.nexters.paperfume.firebase.Firebase;
-import com.nexters.paperfume.models.RecommendBooks;
 import com.nexters.paperfume.util.CustomFont;
 import com.nexters.paperfume.util.SharedPreferenceManager;
 
@@ -55,9 +54,11 @@ public class Splash extends AppCompatActivity {
         //SharedPreferenceManager 초기화
         SharedPreferenceManager.getInstance().init(getApplicationContext());
         //FragranceManager 초기화
-        FragranceManager.getInstance().initFragrance(getResources(), getAssets());
+        FragranceManager.getInstance().init(getResources(), getAssets());
         //CustomFont 초기화
         CustomFont.getInstance().init(getAssets());
+        //MyBook 초기화
+        MyBook.getInstance().init(getApplicationContext());
 
         setContentView(R.layout.activity_splash);
 
@@ -198,19 +199,22 @@ public class Splash extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        RecommendBooks rbook = dataSnapshot.getValue(RecommendBooks.class);
 
-                        RecommendBooks.getInstance().getHappy().clear();
-                        RecommendBooks.getInstance().getHappy().addAll(rbook.getHappy());
+                        RecommendBook rbook = dataSnapshot.getValue(RecommendBook.class);
 
-                        RecommendBooks.getInstance().getMiss().clear();
-                        RecommendBooks.getInstance().getMiss().addAll(rbook.getMiss());
+                        RecommendBook.getInstance().getHappy().clear();
+                        RecommendBook.getInstance().getHappy().addAll(rbook.getHappy());
 
-                        RecommendBooks.getInstance().getGroomy().clear();
-                        RecommendBooks.getInstance().getGroomy().addAll(rbook.getGroomy());
+                        RecommendBook.getInstance().getMiss().clear();
+                        RecommendBook.getInstance().getMiss().addAll(rbook.getMiss());
 
-                        RecommendBooks.getInstance().getStifled().clear();
-                        RecommendBooks.getInstance().getStifled().addAll(rbook.getStifled());
+                        RecommendBook.getInstance().getGroomy().clear();
+                        RecommendBook.getInstance().getGroomy().addAll(rbook.getGroomy());
+
+                        RecommendBook.getInstance().getStifled().clear();
+                        RecommendBook.getInstance().getStifled().addAll(rbook.getStifled());
+
+                        RecommendBook.getInstance().shuffle();
                     }
 
                     @Override

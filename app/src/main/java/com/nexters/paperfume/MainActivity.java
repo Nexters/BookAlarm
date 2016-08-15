@@ -28,7 +28,6 @@ import com.nexters.paperfume.content.fragrance.FragranceInfo;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.enums.Feeling;
 import com.nexters.paperfume.firebase.Firebase;
-import com.nexters.paperfume.models.RecommendBooks;
 import com.nexters.paperfume.util.BitmapBlur;
 import com.nexters.paperfume.util.SecretTextView;
 
@@ -83,21 +82,6 @@ public class MainActivity extends AppCompatActivity {
         endPage = 1; //최초값 1
         first=true;
 
-        //Firebase 로그인
-        //successMethod 에서 로그인 완료처리..여기서 책 데이터 도 로딩..
-        Firebase.getInstance().login(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        processLoginSuccess();
-                    }
-                },
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        processLoginFail();
-                    }
-                } );
         BookTitle = getIntent().getStringArrayListExtra("title");//그냥 배열로 넘기는거 list로 넘기는거 왜 안되는지!
         BookAuthor = getIntent().getStringArrayListExtra("author");
         imageURL = getIntent().getStringArrayListExtra("imageURL");
@@ -249,40 +233,4 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean isViewFromObject(View view,Object object) {return (view == object);}
     }
-    private void processLoginSuccess(){
-        //로그인 성공에 대한 처리
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("recommend_books/by_feeling");
-        ref.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        RecommendBooks rbook = dataSnapshot.getValue(RecommendBooks.class);
-
-                        RecommendBooks.getInstance().getHappy().clear();
-                        RecommendBooks.getInstance().getHappy().addAll(rbook.getHappy());
-
-                        RecommendBooks.getInstance().getMiss().clear();
-                        RecommendBooks.getInstance().getMiss().addAll(rbook.getMiss());
-
-                        RecommendBooks.getInstance().getGroomy().clear();
-                        RecommendBooks.getInstance().getGroomy().addAll(rbook.getGroomy());
-
-                        RecommendBooks.getInstance().getStifled().clear();
-                        RecommendBooks.getInstance().getStifled().addAll(rbook.getStifled());
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //TODO
-                    }
-                }
-        );
-    }
-
-    private void processLoginFail(){
-        //로그인 실패에 대한 처리 ( 네트워크 연결 실패 )
-        Log.d("Paperfume", "processLoginFailed");
-    }
-
 }

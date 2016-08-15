@@ -41,7 +41,7 @@ public class FragranceManager {
     private Resources mResources;
     private HashMap<Feeling, HashMap< PartOfDay, HashMap< String, Vector<FragranceInfo>>>> mMapFragranceInfo = new HashMap<Feeling, HashMap<PartOfDay, HashMap< String, Vector<FragranceInfo>>>>();
 
-    public void initFragrance(Resources resources, AssetManager assetManager) {
+    public void init(Resources resources, AssetManager assetManager) {
         mResources = resources;
         mAssetManager = assetManager;
 
@@ -130,10 +130,6 @@ public class FragranceManager {
      */
     public FragranceInfo getFragrance(Feeling feeling) {
 
-        long currentTimestamp = System.currentTimeMillis() / 1000;
-        long previousTimestamp =  SharedPreferenceManager.getInstance().getLong(KEY_LAST_FRAGRANCE_TIMESTAMP);
-        SharedPreferenceManager.getInstance().setLong(KEY_LAST_FRAGRANCE_TIMESTAMP, currentTimestamp);
-
         Calendar cal = Calendar.getInstance();
         int Hour24=cal.get(Calendar.HOUR_OF_DAY);
 
@@ -158,17 +154,6 @@ public class FragranceManager {
             metaFragranceInfo = gson.fromJson(s,MetaFragranceInfo.class);
         }
 
-        String a = gson.toJson(metaFragranceInfo);
-
-        long current3HourUnit =  currentTimestamp / ( 60 * 60 * 3);
-        long previous3HourUnit =  previousTimestamp / ( 60 * 60 * 3);
-
-        //3시간 단위로 선택한 향기 리셋
-        if(current3HourUnit != previous3HourUnit) {
-            resetFragrancePreference();
-            metaFragranceInfo.reset();
-        }
-
         metaFragranceInfo.setFeeling(feeling);
         metaFragranceInfo.setPartOfDay(partOfDay);
 
@@ -181,13 +166,6 @@ public class FragranceManager {
         }
 
         return selectedFragranceInfo;
-    }
-
-    private void resetFragrancePreference(){
-        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE + "_" + Feeling.HAPPY.toString());
-        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE + "_" + Feeling.MISS.toString());
-        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE + "_" + Feeling.GROOMY.toString());
-        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE + "_" + Feeling.STIFLED.toString());
     }
 
     private FragranceInfo findFragranceInfo(MetaFragranceInfo metaFragranceInfo) {
@@ -251,11 +229,40 @@ public class FragranceManager {
         return selectedFragranceInfo;
     }
 
+    public boolean checkResetFragrance(){
+
+        long currentTimestamp = System.currentTimeMillis() / 1000;
+        long previousTimestamp =  SharedPreferenceManager.getInstance().getLong(KEY_LAST_FRAGRANCE_TIMESTAMP);
+
+
+        long current3HourUnit =  currentTimestamp / ( 60 * 60 * 3);
+        long previous3HourUnit =  previousTimestamp / ( 60 * 60 * 3);
+
+        //3시간 단위로 리셋
+        if(current3HourUnit != previous3HourUnit) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public void resetFragrance() {
+
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE + "_" + Feeling.HAPPY.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE + "_" + Feeling.MISS.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE + "_" + Feeling.GROOMY.toString());
+        SharedPreferenceManager.getInstance().remove( KEY_LAST_FRAGRANCE + "_" + Feeling.STIFLED.toString());
+
+        long currentTimestamp = System.currentTimeMillis() / 1000;
+        SharedPreferenceManager.getInstance().setLong(KEY_LAST_FRAGRANCE_TIMESTAMP, currentTimestamp);
+    }
 
     /**
      * FragranceInfo 를 찾을때 사용하게 되는 클래스
      */
-    private class MetaFragranceInfo {
+    class MetaFragranceInfo {
 
         transient Feeling mFeeling;
         transient PartOfDay mPartOfDay;
