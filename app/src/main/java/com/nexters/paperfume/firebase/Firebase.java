@@ -5,10 +5,14 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.Executor;
 
 /**
  * Created by sangyeonK on 2016-07-18.
@@ -57,23 +61,26 @@ public class Firebase {
         };
         //listener 추가
         mAuth.addAuthStateListener(mAuthListener);
-
     }
 
     public void login(final Runnable success, final Runnable failed) {
-        mAuth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
-                if(task.isSuccessful()){
-                    mLoggedIn = true;
+            public void onSuccess(AuthResult authResult) {
+                mLoggedIn = true;
+                if(success != null)
                     success.run();
-                }
-                if (!task.isSuccessful()) {
-                    mLoggedIn = false;
+
+                Log.d(TAG, "signInAnonymously onSuccess");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mLoggedIn = false;
+                if(failed != null)
                     failed.run();
-                    Log.w(TAG, "signInAnonymously", task.getException());
-                }
+
+                Log.w(TAG, "signInAnonymously", e);
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.nexters.paperfume;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.Gson;
 import com.nexters.paperfume.content.Setting;
 
@@ -39,6 +42,8 @@ import com.nexters.paperfume.util.SharedPreferenceManager;
  */
 public class Splash extends AppCompatActivity {
     public static final String  TAG = "SPLASH";
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,7 +184,10 @@ public class Splash extends AppCompatActivity {
                     }
                 } );
 
-        handler.sendEmptyMessageDelayed(0, 5000);
+
+        if(checkPlayService()) {
+            handler.sendEmptyMessageDelayed(0, 5000);
+        }
     }
 
     private void processLoginSuccess(){
@@ -216,5 +224,25 @@ public class Splash extends AppCompatActivity {
     private void processLoginFail(){
         //로그인 실패에 대한 처리 ( 네트워크 연결 실패 )
         Log.d(TAG, "processLoginFailed");
+    }
+
+    /**
+     * 구글플레이서비스 가 설치되어 있어야 한다.
+     * @return 설치여부 반환
+     */
+    private boolean checkPlayService(){
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }
