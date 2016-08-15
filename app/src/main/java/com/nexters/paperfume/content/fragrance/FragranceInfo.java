@@ -16,6 +16,8 @@ public class FragranceInfo {
     private String mImageAsset;         //이미지 어셋 위치
 
 
+    public FragranceInfo() {
+    }
 
     public String getAdjective() {
         return mAdjective;
@@ -46,6 +48,7 @@ public class FragranceInfo {
     public void setImageAsset(String mImageAsset) {
         this.mImageAsset = mImageAsset;
     }
+
 }
 
 

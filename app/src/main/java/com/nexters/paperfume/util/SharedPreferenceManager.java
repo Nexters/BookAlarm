@@ -16,7 +16,7 @@ public class SharedPreferenceManager {
     private SharedPreferenceManager() {
     }
 
-    public static final String PAPERFUME_PREFERENCES = "PAPERFUME_PREFERENCES" ;
+    private static final String PAPERFUME_PREFERENCES = "PAPERFUME_PREFERENCES" ;
 
     private SharedPreferences mSharedPreferences;
 
@@ -28,7 +28,7 @@ public class SharedPreferenceManager {
     public void setBoolean(String key, Boolean value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putBoolean(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public Boolean getBoolean(String key) {
@@ -38,7 +38,7 @@ public class SharedPreferenceManager {
     public void setString(String key, String value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public String getString(String key) {
@@ -48,18 +48,33 @@ public class SharedPreferenceManager {
     public void setInt(String key, int value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putInt(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public int getInt(String key) {
         return mSharedPreferences.getInt(key, -1);
     }
 
+    public void setLong(String key, long value) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putLong(key, value);
+        editor.apply();
+    }
+
+    public long getLong(String key) {
+        return mSharedPreferences.getLong(key, -1L);
+    }
+
     public void remove(String key) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.remove(key);
-        editor.commit();
+        editor.apply();
     }
 
+    public void clear() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
 
 }
