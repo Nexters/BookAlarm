@@ -4,18 +4,15 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
 import com.nexters.paperfume.content.Setting;
+import com.nexters.paperfume.util.SharedPreferenceManager;
 
 /**
  * Created by user on 2016-07-24.
@@ -23,21 +20,20 @@ import com.nexters.paperfume.content.Setting;
 
 public class SettingActivity extends AppCompatActivity implements SettingListener{
 
+    public static final String KEY_SETTING = "SETTING";
+
     Setting setting;
     ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-/*        //스플래시 액티비티 실행
-        Intent intent = new Intent(SettingActivity.this, Splash.class);
-        startActivity(intent);*/
 
         setContentView(R.layout.activity_setting);
         if(savedInstanceState==null){
             fragmentTransaction(new GenderSettingFragment());
         }
-        setting = new Setting();
+        setting = Setting.getInstance();
     }
 
     @Override
@@ -80,16 +76,13 @@ public class SettingActivity extends AppCompatActivity implements SettingListene
     public void finishSetting(View view) {
         Log.d("Setting", "Finished");
 
-        SharedPreferences preferences = getSharedPreferences("paperfume",MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(setting);
         Log.d("Setting : ",json );
-        editor.putString("setting",json);
-        editor.commit();
+        SharedPreferenceManager.getInstance().setString(KEY_SETTING, json);
 
         FragmentManager fm = getFragmentManager();
-        Intent intent = new Intent(SettingActivity.this,FeelingActivity.class);
+        Intent intent = new Intent(SettingActivity.this, FeelingActivity.class);
         startActivity(intent);
         finish();
     }

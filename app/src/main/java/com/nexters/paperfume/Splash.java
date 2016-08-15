@@ -42,6 +42,18 @@ public class Splash extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /**
+         * Splash Activity 실행시, 글로벌하게 사용되는 객체들의 초기화를 진행한다.
+         */
+
+        //SharedPreferenceManager 초기화
+        SharedPreferenceManager.getInstance().init(getApplicationContext());
+        //FragranceManager 초기화
+        FragranceManager.getInstance().initFragrance(getResources(), getAssets());
+        //CustomFont 초기화
+        CustomFont.getInstance().init(getAssets());
+
         setContentView(R.layout.activity_splash);
 
         final LinearLayout backgroundOne = (LinearLayout) findViewById(R.id.splash);
@@ -132,30 +144,24 @@ public class Splash extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
 
-                SharedPreferences preferences = getSharedPreferences("paperfume",MODE_PRIVATE);
-                Gson gson = new Gson();
-                String json = preferences.getString("setting", "");
-                Log.d("Settings : ",json);
-                Setting setting = gson.fromJson(json,Setting.class);
+                String json = SharedPreferenceManager.getInstance().getString(SettingActivity.KEY_SETTING);
 
-                Intent intent;
-                if(setting!=null){
-                    intent = new Intent(Splash.this,FeelingActivity.class);
+                if( json !=null){
+                    Log.d("Settings : ",json);
+                    Gson gson = new Gson();
+                    Setting setting = gson.fromJson(json,Setting.class);
+                    Setting.getInstance().loadSetting( setting );
+
+                    Intent intent = new Intent(Splash.this,FeelingActivity.class);
                     startActivity(intent);
                 }else{
-                    intent = new Intent(Splash.this,SettingActivity.class);
+                    Intent intent = new Intent(Splash.this,SettingActivity.class);
                     startActivity(intent);
                 }
+
                 finish();
             }
         };
-
-        //SharedPreferenceManager 초기화
-        SharedPreferenceManager.getInstance().init(getApplicationContext());
-        //FragranceManager 초기화
-        FragranceManager.getInstance().initFragrance(getResources(), getAssets());
-        //CustomFont 초기화
-        CustomFont.getInstance().init(getAssets());
 
         //Firebase 로그인
         //successMethod 에서 로그인 완료처리..여기서 책 데이터 도 로딩..

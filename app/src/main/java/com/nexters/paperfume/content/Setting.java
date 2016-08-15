@@ -5,21 +5,20 @@ package com.nexters.paperfume.content;
  */
 
 public class Setting {
+    private static Setting ourInstance = new Setting();
+
+    public static Setting getInstance() {
+        return ourInstance;
+    }
+
+    private Setting() {
+
+    }
+
     private String color;
     private String gender;
     private String blood;
     private int age;
-
-    public Setting() {
-        super();
-    }
-
-    public Setting(String color, String gender, String blood, int age) {
-        this.color = color;
-        this.gender = gender;
-        this.blood = blood;
-        this.age = age;
-    }
 
     public String getColor() {
         return color;
@@ -53,13 +52,10 @@ public class Setting {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "Setting{" +
-                "color='" + color + '\'' +
-                ", gender='" + gender + '\'' +
-                ", blood='" + blood + '\'' +
-                ", age=" + age +
-                '}';
+    public void loadSetting(Setting setting) {
+        this.gender = setting.getGender();
+        this.blood = setting.getBlood();
+        this.color = setting.getColor();
+        this.age = setting.getAge();
     }
 }
