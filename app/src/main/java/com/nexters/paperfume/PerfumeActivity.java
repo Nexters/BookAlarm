@@ -13,14 +13,12 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nexters.paperfume.content.Status;
+import com.nexters.paperfume.content.book.BookInfo;
 import com.nexters.paperfume.content.book.MyBook;
 import com.nexters.paperfume.content.fragrance.FragranceInfo;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
@@ -40,7 +38,6 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by user on 2016-07-27.
@@ -48,26 +45,15 @@ import java.util.List;
 
 public class PerfumeActivity extends AppCompatActivity {
     Button button;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    private int buffersize = Character.MAX_VALUE;
-    private int localnum = 0;
-    private int resultSize = 0;
-    private char readBuf[];
-    private ArrayList<String> title = new ArrayList<>();
-    private ArrayList<String> author = new ArrayList<>();
-    private ArrayList<String> imageURL = new ArrayList<>();
-    private ArrayList<String> info = new ArrayList<>();
+
     private JSONObject jsonObject;
-    private Feeling intentedFeeling;
-    private ProgressDialog dialog;
+
+    private ProgressDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final Intent intent = getIntent();
-        intentedFeeling = (Feeling) intent.getSerializableExtra("feeling");
 
         setContentView(R.layout.activity_perfume);
         View imageView = findViewById(R.id.image_activity_perfume);
@@ -80,7 +66,9 @@ public class PerfumeActivity extends AppCompatActivity {
             MyBook.getInstance().resetMyBooks();
         }
 
-        FragranceInfo fragranceInfo = FragranceManager.getInstance().getFragrance(intentedFeeling);
+        Feeling feeling = Status.getInstance().getCurrentFeeling();
+        FragranceInfo fragranceInfo = FragranceManager.getInstance().getFragrance(feeling);
+        final BookInfo[] bookInfos = MyBook.getInstance().readMyBookInfos(feeling);
 
         //폰트 설정
         button.setTypeface(CustomFont.getInstance().getTypeface());
@@ -107,7 +95,7 @@ public class PerfumeActivity extends AppCompatActivity {
         else
             dateFormat = new SimpleDateFormat("오후 K시 mm분");
 
-        String sFragranceGuide = getResources().getString(R.string.foramt_fragrance_guide, dateFormat.format(cal.getTime()), intentedFeeling.toMeans(), fragranceInfo.getAdjective(), fragranceInfo.getName());
+        String sFragranceGuide = getResources().getString(R.string.foramt_fragrance_guide, dateFormat.format(cal.getTime()), feeling.toMeans(), fragranceInfo.getAdjective(), fragranceInfo.getName());
 
         fragranceGuide.setText(sFragranceGuide);
 
@@ -116,122 +104,97 @@ public class PerfumeActivity extends AppCompatActivity {
         button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog = ProgressDialog.show(PerfumeActivity.this, "","책을 받아오는 중입니다 잠시만 기다려주세요.",true);
-                //Selected feelings post to server
-                String strFeeling = intentedFeeling.toString();
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference("recommend_books/by_feeling");
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        List object = (List) dataSnapshot.getValue();
+                mLoadingDialog = ProgressDialog.show(PerfumeActivity.this, null,"책을 받아오는 중입니다 잠시만 기다려주세요.",true);
 
-                        Log.d("value", object.get(1).toString());
-                        int a[] = new int[3];
-                        for (int i = 0; i < 3; i++) {
-                            a[i] = (int) (Math.random() * 10);
-                            for (int j = 0; j < i; j++) {
-                                if (a[i] == a[j]) {
-                                    i--;
-                                }
-                            }
-                        }
+                int loadedBookCount = 0;
+                for(BookInfo bookInfo : bookInfos) {
+                    if(bookInfo.isLoadedBookData())
+                        loadedBookCount++;
+                }
+                if(loadedBookCount == bookInfos.length){
+                    startMainActivity();
+                }
+                else {
+                    //Selected feelings post to server
+                    for(final BookInfo bookInfo : bookInfos) {
+                        StorageReference islandRef = storageRef.child("book_data/" + String.valueOf(bookInfo.getBookID()) + ".json");
+                        try {
+                            final File localFile = File.createTempFile("temp", ".json");//이거 전역변수로 선언하고 초기화 시키면 안됨
 
-                        for (int num = 0; num < 3; num++) {
-                            localnum = num;
+                            islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                    try {
+                                        int resultSize = 0;
+                                        int totalByteCount = (int)taskSnapshot.getTotalByteCount();
+                                        char readBuf[] = new char[totalByteCount];
+                                        FileInputStream fs = new FileInputStream(localFile);
+                                        BufferedReader bf = new BufferedReader(new InputStreamReader(fs));
+                                        StringBuilder sb = new StringBuilder();
 
-                            StorageReference islandRef = storageRef.child("book_data/" + object.get(a[num]).toString().trim() + ".json");
-                            try {
-                                final File localFile = File.createTempFile("temp", ".json");//이거 전역변수로 선언하고 초기화 시키면 안됨
-                                readBuf = new char[buffersize];
-                                islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                        try {
-
-                                            FileInputStream fs = new FileInputStream(localFile);
-                                            BufferedReader bf = new BufferedReader(new InputStreamReader(fs));
-                                            StringBuilder sb = new StringBuilder();
-
-                                            while ((resultSize = bf.read(readBuf)) != -1) {
-                                                if (resultSize == buffersize) {
-                                                    sb.append(readBuf);
-                                                } else {
-                                                    for (int i = 0; i < resultSize; i++) {
-                                                        sb.append(readBuf[i]);
-                                                    }
+                                        while ((resultSize = bf.read(readBuf)) != -1) {
+                                            if (resultSize == totalByteCount) {
+                                                sb.append(readBuf);
+                                            } else {
+                                                for (int i = 0; i < resultSize; i++) {
+                                                    sb.append(readBuf[i]);
                                                 }
                                             }
-
-                                            jsonObject = null;
-                                            String jString = sb.toString();
-
-                                            jsonObject = new JSONObject(jString);
-
-                                            try {
-                                                title.add(jsonObject.getString("title"));
-                                                author.add(jsonObject.getString("author"));
-                                                imageURL.add(jsonObject.getString("image"));
-                                                JSONArray ja = jsonObject.getJSONArray("inside");
-                                                String insideBook = new String();
-                                                for(int i = 0 ; i < ja.length() ; i++){
-                                                    insideBook += ja.getString(i) + "\n\n";
-                                                }
-                                                info.add(insideBook);
-
-                                                Log.d("title", title.toString());
-                                                if (info.size() >= 3) {
-                                                    dialog.dismiss();
-                                                    Intent mainIntent = new Intent(PerfumeActivity.this, MainActivity.class);
-                                                    mainIntent.putExtra("title",title);
-                                                    mainIntent.putExtra("author", author);
-                                                    mainIntent.putExtra("imageURL", imageURL);
-                                                    mainIntent.putExtra("info", info);
-                                                    mainIntent.putExtra("back",intentedFeeling);
-                                                    startActivity(mainIntent);
-                                                    finish();
-                                                }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                            Log.d("sb", sb.toString());
-
-
-                                            readBuf = null;
-                                            readBuf = new char[buffersize];
-
-                                        } catch (FileNotFoundException e) {
-
-                                            e.printStackTrace();
-                                        } catch (IOException e) {
-
-                                            e.printStackTrace();
-                                        } catch (JSONException e) {
-
-                                            e.printStackTrace();
                                         }
 
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(Exception e) {
-                                        Log.e("fail?", "?" + e.getMessage());
-                                    }
-                                });
+                                        jsonObject = null;
+                                        String jString = sb.toString();
 
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                                        jsonObject = new JSONObject(jString);
 
+                                        try {
+                                            bookInfo.setTitle(jsonObject.getString("title"));
+                                            bookInfo.setAuthor(jsonObject.getString("author"));
+                                            bookInfo.setImage(jsonObject.getString("image"));
+                                            JSONArray ja = jsonObject.getJSONArray("inside");
+                                            String insideBook = new String();
+                                            for (int i = 0; i < ja.length(); i++) {
+                                                insideBook += ja.getString(i) + "\n\n";
+                                            }
+                                            bookInfo.setInside(insideBook);
+                                            bookInfo.setLoadedBookData(true);
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        Log.d("sb", sb.toString());
+
+                                        int loadedBookCount = 0;
+                                        for (BookInfo bookInfo : bookInfos) {
+                                            if (bookInfo.isLoadedBookData())
+                                                loadedBookCount++;
+                                        }
+                                        if (loadedBookCount == bookInfos.length) {
+                                            startMainActivity();
+                                        }
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+
+                                        e.printStackTrace();
+                                    } catch (JSONException e) {
+
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Log.e("fail?", "?" + e.getMessage());
+                                }
+                            });
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
+                }
             }
         });
     }
@@ -239,5 +202,13 @@ public class PerfumeActivity extends AppCompatActivity {
     public void backButtonClick(View view){
         onBackPressed();
     }
+
+    public void startMainActivity(){
+        mLoadingDialog.dismiss();
+        Intent mainIntent = new Intent(PerfumeActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+    }
+
 
 }

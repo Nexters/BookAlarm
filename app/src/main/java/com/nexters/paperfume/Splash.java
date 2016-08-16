@@ -30,7 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nexters.paperfume.content.book.MyBook;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
-import com.nexters.paperfume.content.book.RecommendBook;
+import com.nexters.paperfume.content.book.FeaturedBook;
 import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.util.CustomFont;
 import com.nexters.paperfume.util.SharedPreferenceManager;
@@ -200,21 +200,21 @@ public class Splash extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        RecommendBook rbook = dataSnapshot.getValue(RecommendBook.class);
+                        FeaturedBook rbook = dataSnapshot.getValue(FeaturedBook.class);
 
-                        RecommendBook.getInstance().getHappy().clear();
-                        RecommendBook.getInstance().getHappy().addAll(rbook.getHappy());
+                        FeaturedBook.getInstance().getHappy().clear();
+                        FeaturedBook.getInstance().getHappy().addAll(rbook.getHappy());
 
-                        RecommendBook.getInstance().getMiss().clear();
-                        RecommendBook.getInstance().getMiss().addAll(rbook.getMiss());
+                        FeaturedBook.getInstance().getMiss().clear();
+                        FeaturedBook.getInstance().getMiss().addAll(rbook.getMiss());
 
-                        RecommendBook.getInstance().getGroomy().clear();
-                        RecommendBook.getInstance().getGroomy().addAll(rbook.getGroomy());
+                        FeaturedBook.getInstance().getGroomy().clear();
+                        FeaturedBook.getInstance().getGroomy().addAll(rbook.getGroomy());
 
-                        RecommendBook.getInstance().getStifled().clear();
-                        RecommendBook.getInstance().getStifled().addAll(rbook.getStifled());
+                        FeaturedBook.getInstance().getStifled().clear();
+                        FeaturedBook.getInstance().getStifled().addAll(rbook.getStifled());
 
-                        RecommendBook.getInstance().shuffle();
+                        FeaturedBook.getInstance().shuffle();
                     }
 
                     @Override

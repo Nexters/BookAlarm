@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
+import com.nexters.paperfume.content.Status;
 import com.nexters.paperfume.enums.Feeling;
 
 import com.nexters.paperfume.util.CustomFont;
@@ -100,8 +101,7 @@ public class FeelingActivity extends AppCompatActivity {
                 //Selected feelings post to server
 
                 Intent intent = new Intent(FeelingActivity.this, PerfumeActivity.class);
-                intent.putExtra("feeling",feeling);
-                //intent.putExtra() //Perpume data
+                Status.getInstance().setCurrentFeeling(feeling);
                 startActivity(intent);
             }
         });

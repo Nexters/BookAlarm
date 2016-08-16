@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.view.LinkagePager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.nexters.paperfume.content.Status;
+import com.nexters.paperfume.content.book.BookInfo;
+import com.nexters.paperfume.content.book.MyBook;
 import com.nexters.paperfume.content.fragrance.FragranceInfo;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.enums.Feeling;
-import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.util.BitmapBlur;
 import com.nexters.paperfume.util.SecretTextView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import me.crosswall.lib.coverflow.CoverFlow;
@@ -49,13 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
     int endPage; // 마지막 선택
     boolean first;
-    ArrayList<String> BookTitle;
-    ArrayList<String> BookAuthor;
-    ArrayList<String> imageURL;
-    ArrayList<String> info;
 
     Feeling feeling;
     FragranceInfo fragranceInfo;
+    BookInfo[] bookInfos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,18 +74,11 @@ public class MainActivity extends AppCompatActivity {
         endPage = 1; //최초값 1
         first=true;
 
-        BookTitle = getIntent().getStringArrayListExtra("title");//그냥 배열로 넘기는거 list로 넘기는거 왜 안되는지!
-        BookAuthor = getIntent().getStringArrayListExtra("author");
-        imageURL = getIntent().getStringArrayListExtra("imageURL");
-        Log.d("image",imageURL.toString());
-        info = getIntent().getStringArrayListExtra("info");
-
-
         mainBack = (LinearLayout)findViewById(R.id.mainBack);
 
-        feeling = (Feeling)getIntent().getSerializableExtra("back");
-
+        feeling = Status.getInstance().getCurrentFeeling();
         fragranceInfo = FragranceManager.getInstance().getFragrance(feeling);
+        bookInfos = MyBook.getInstance().readMyBookInfos(feeling);
 
         try {
             Drawable d = Drawable.createFromStream(getAssets().open(fragranceInfo.getImageAsset()), null);
@@ -149,10 +134,10 @@ public class MainActivity extends AppCompatActivity {
                         text.hide();
 
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                        intent.putExtra("title",BookTitle.get(0));
-                        intent.putExtra("author",BookAuthor.get(0));
-                        intent.putExtra("info",info.get(0));
-                        intent.putExtra("imageURL",imageURL.get(0));
+                        intent.putExtra("title",bookInfos[0].getTitle());
+                        intent.putExtra("author",bookInfos[0].getAuthor());
+                        intent.putExtra("info",bookInfos[0].getInside());
+                        intent.putExtra("imageURL",bookInfos[0].getImage());
                         endPage = 0;
                         first=false;
                         startActivity(intent);
@@ -166,10 +151,10 @@ public class MainActivity extends AppCompatActivity {
                         text.hide();
 
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                        intent.putExtra("title",BookTitle.get(1));
-                        intent.putExtra("author",BookAuthor.get(1));
-                        intent.putExtra("info",info.get(1));
-                        intent.putExtra("imageURL",imageURL.get(1));
+                        intent.putExtra("title",bookInfos[1].getTitle());
+                        intent.putExtra("author",bookInfos[1].getAuthor());
+                        intent.putExtra("info",bookInfos[1].getInside());
+                        intent.putExtra("imageURL",bookInfos[1].getImage());
                         endPage = 1;
                         first=false;
                         startActivity(intent);
@@ -184,10 +169,10 @@ public class MainActivity extends AppCompatActivity {
                         text.hide();
 
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                        intent.putExtra("title",BookTitle.get(2));
-                        intent.putExtra("author",BookAuthor.get(2));
-                        intent.putExtra("info",info.get(2));
-                        intent.putExtra("imageURL",imageURL.get(2));
+                        intent.putExtra("title",bookInfos[2].getTitle());
+                        intent.putExtra("author",bookInfos[2].getAuthor());
+                        intent.putExtra("info",bookInfos[2].getInside());
+                        intent.putExtra("imageURL",bookInfos[2].getImage());
                         endPage = 2;
                         first=false;
                         startActivity(intent);
@@ -211,10 +196,11 @@ public class MainActivity extends AppCompatActivity {
             TextView title = (TextView)view.findViewById(R.id.textView);
             TextView author = (TextView)view.findViewById(R.id.textView2);
 
-            Glide.with(MainActivity.this).load(imageURL.get(position).trim()).override(180, 250).into(image);
-
-            title.setText(BookTitle.get(position));
-            author.setText(BookAuthor.get(position));
+            if(position < bookInfos.length ) {
+                Glide.with(MainActivity.this).load(bookInfos[position].getImage()).override(180, 250).into(image);
+                title.setText(bookInfos[position].getTitle());
+                author.setText(bookInfos[position].getAuthor());
+            }
             title.setTextColor(Color.WHITE);
             author.setTextColor(Color.WHITE);
 

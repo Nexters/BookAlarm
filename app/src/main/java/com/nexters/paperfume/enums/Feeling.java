@@ -10,6 +10,7 @@ public enum Feeling {
     GROOMY,     //우울해요
     STIFLED;    //답답해요
 
+
     @Override
     public String toString() {
         return name().toLowerCase();
