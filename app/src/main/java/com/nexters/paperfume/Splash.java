@@ -1,8 +1,11 @@
 package com.nexters.paperfume;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -33,7 +36,10 @@ import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.content.book.FeaturedBook;
 import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.util.CustomFont;
+import com.nexters.paperfume.util.ProcessHelper;
 import com.nexters.paperfume.util.SharedPreferenceManager;
+
+import static android.os.Process.getElapsedCpuTime;
 
 
 /**
@@ -42,7 +48,13 @@ import com.nexters.paperfume.util.SharedPreferenceManager;
 public class Splash extends AppCompatActivity {
     public static final String  TAG = "SPLASH";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final long MIN_SPLASH_VIEW_TIME = 3000L;
+    private static final long MAX_SPLASH_VIEW_TIME = 10000L;
 
+    private Handler mSplashEndHander;
+    private AlertDialog mLoginFailedDialog;
+    private long mElapsedCpuTimeAtOnCreate;
+    private boolean mRetrievedRecommendBookData = false;;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,10 +157,31 @@ public class Splash extends AppCompatActivity {
 
         mAnimationSet.start();
 
-        android.os.Handler handler = new android.os.Handler(){
+        mLoginFailedDialog = new AlertDialog.Builder(Splash.this).create();
+        mLoginFailedDialog.setTitle(R.string.error);
+        mLoginFailedDialog.setMessage(getResources().getString(R.string.failed_login));
+        mLoginFailedDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getResources().getText(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        ProcessHelper.Exit();
+                    }
+                });
+
+        mSplashEndHander = new android.os.Handler(){
+            boolean mAlreadyCalled = false;
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
+                if( true == mAlreadyCalled )
+                    return;
+                mAlreadyCalled = true;
+
+                if(false == mRetrievedRecommendBookData) {
+                    processLoginFail();
+                    return;
+                }
 
                 String json = SharedPreferenceManager.getInstance().getString(SettingActivity.KEY_SETTING);
 
@@ -167,10 +200,10 @@ public class Splash extends AppCompatActivity {
 
                 finish();
             }
+
         };
 
         //Firebase 로그인
-        //successMethod 에서 로그인 완료처리..여기서 책 데이터 도 로딩..
         Firebase.getInstance().login(
                 new Runnable() {
                     @Override
@@ -185,10 +218,10 @@ public class Splash extends AppCompatActivity {
                     }
                 } );
 
+        //OnCreate 된 시간 측정
+        mElapsedCpuTimeAtOnCreate = getElapsedCpuTime();
 
-        if(checkPlayService()) {
-            handler.sendEmptyMessageDelayed(0, 5000);
-        }
+        mSplashEndHander.sendEmptyMessageDelayed(0,MAX_SPLASH_VIEW_TIME);
     }
 
     private void processLoginSuccess(){
@@ -215,19 +248,32 @@ public class Splash extends AppCompatActivity {
                         FeaturedBook.getInstance().getStifled().addAll(rbook.getStifled());
 
                         FeaturedBook.getInstance().shuffle();
+
+                        mRetrievedRecommendBookData = true;
+
+                        if(checkPlayService()) {
+                            long elapsedTime = getElapsedCpuTime() - mElapsedCpuTimeAtOnCreate;
+                            long delayTime = MIN_SPLASH_VIEW_TIME - elapsedTime;
+                            if(delayTime < 0)
+                                mSplashEndHander.sendEmptyMessage(0);
+                            else
+                                mSplashEndHander.sendEmptyMessageDelayed(0, delayTime);
+                        }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        //TODO
+                        mLoginFailedDialog.show();
                     }
                 }
         );
+
+
     }
 
     private void processLoginFail(){
         //로그인 실패에 대한 처리 ( 네트워크 연결 실패 )
-        Log.d(TAG, "processLoginFailed");
+        mLoginFailedDialog.show();
     }
 
     /**
@@ -243,7 +289,7 @@ public class Splash extends AppCompatActivity {
                         .show();
             } else {
                 Log.i(TAG, "This device is not supported.");
-                finish();
+                ProcessHelper.Exit();
             }
             return false;
         }

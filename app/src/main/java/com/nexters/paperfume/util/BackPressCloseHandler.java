@@ -7,6 +7,8 @@ package com.nexters.paperfume.util;
 import android.app.Activity;
 import android.widget.Toast;
 
+import com.nexters.paperfume.R;
+
 public class BackPressCloseHandler {
 
     private long backKeyPressedTime = 0;
@@ -25,14 +27,13 @@ public class BackPressCloseHandler {
             return;
         }
         if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
-            activity.finish();
             toast.cancel();
+            ProcessHelper.Exit();
         }
     }
 
     public void showGuide() {
-        toast = Toast.makeText(activity,
-                "\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
+        toast = Toast.makeText(activity, R.string.exit_toast, Toast.LENGTH_SHORT);
         toast.show();
     }
 }

@@ -29,12 +29,12 @@ public class MyBook {
     public static final int MY_BOOK_COUNT_BY_FEELING = 3;
     public static final int USED_BOOK_HISTORY_COUNT = 12;
 
-    private SQLiteDatabase mDatabase;
+    private Context mContext;
     private HashMap<Feeling, BookInfo[]> mMyBooks = new HashMap<Feeling, BookInfo[]>();
     private ArrayList<Integer> mUsedBookHistory = new ArrayList<Integer>(USED_BOOK_HISTORY_COUNT);
 
     public void init(Context context) {
-        mDatabase = new MyBookDBHeler(context).getWritableDatabase();
+        mContext = context;
 
         readUsedBookHistory();
     }
@@ -42,7 +42,11 @@ public class MyBook {
     public void resetMyBooks() {
         mMyBooks.clear();
 
-        mDatabase.delete(MyBookDBSchema.MyBookTable.NAME, null, null);
+        SQLiteDatabase database = new MyBookDBHeler(mContext).getWritableDatabase();
+
+        database.delete(MyBookDBSchema.MyBookTable.NAME, null, null);
+
+        database.close();
     }
 
     /**
@@ -52,6 +56,9 @@ public class MyBook {
      * @return 읽어들인 책 리스트
      */
     public BookInfo[] readMyBookInfos(Feeling feeling) {
+        SQLiteDatabase database = new MyBookDBHeler(mContext).getWritableDatabase();
+
+        //mMyBooks.
         BookInfo[] myBooks = mMyBooks.get(feeling);
         if (myBooks != null)
             return myBooks;
@@ -63,14 +70,14 @@ public class MyBook {
 
         mMyBooks.put(feeling,myBooks);
 
-        Cursor cursor = mDatabase.query(
+        Cursor cursor = database.query(
                 MyBookDBSchema.MyBookTable.NAME,
                 new String[] {MyBookDBSchema.MyBookTable.Cols.BOOK_ID},
                 MyBookDBSchema.MyBookTable.Cols.FEELING + " = ?",
                 new String[] {feeling.name()},
                 null,
                 null,
-                null
+                "date asc"
         );
 
         ArrayList<Integer> myBooks_onDB = new ArrayList<Integer>(MY_BOOK_COUNT_BY_FEELING);
@@ -106,26 +113,29 @@ public class MyBook {
             }
 
             //DB에 내 책 기록
-            mDatabase.beginTransaction();
+            database.beginTransaction();
             try {
-                mDatabase.delete(MyBookDBSchema.MyBookTable.NAME, null, null);
+                database.delete(MyBookDBSchema.MyBookTable.NAME,
+                        MyBookDBSchema.MyBookTable.Cols.FEELING + " = ?",
+                        new String[] {feeling.name()});
                 for( int i = 0 ; i < myBooks_onDB.size() ; i++ ) {
                     ContentValues cv = new ContentValues();
+                    long currentTime = System.currentTimeMillis() + i;
                     cv.put(MyBookDBSchema.MyBookTable.Cols.BOOK_ID, myBooks_onDB.get(i) );
                     cv.put(MyBookDBSchema.MyBookTable.Cols.FEELING, feeling.name());
-                    mDatabase.insert(MyBookDBSchema.MyBookTable.NAME,null,cv);
+                    cv.put(MyBookDBSchema.MyBookTable.Cols.DATE, currentTime);
+                    database.insert(MyBookDBSchema.MyBookTable.NAME,null,cv);
 
                     cv = new ContentValues();
                     cv.put(MyBookDBSchema.MyBookHistoryTable.Cols.BOOK_ID, myBooks_onDB.get(i));
-                    cv.put(MyBookDBSchema.MyBookHistoryTable.Cols.DATE, System.currentTimeMillis());
-                    mDatabase.insertWithOnConflict(MyBookDBSchema.MyBookHistoryTable.NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+                    cv.put(MyBookDBSchema.MyBookHistoryTable.Cols.DATE, currentTime);
+                    database.insertWithOnConflict(MyBookDBSchema.MyBookHistoryTable.NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
                 }
-                mDatabase.setTransactionSuccessful();
+                database.setTransactionSuccessful();
             } catch  (SQLException e){
 
             } finally {
-                mDatabase.endTransaction();
-                mDatabase.close();
+                database.endTransaction();
             }
 
         }
@@ -136,13 +146,17 @@ public class MyBook {
             myBooks[i].mBookID = myBooks_onDB.get(i);
         }
 
+        database.close();
+
         return myBooks;
     }
 
     private void readUsedBookHistory() {
+        SQLiteDatabase database = new MyBookDBHeler(mContext).getWritableDatabase();
+
         mUsedBookHistory.clear();
 
-        Cursor cursor = mDatabase.query(
+        Cursor cursor = database.query(
                 MyBookDBSchema.MyBookHistoryTable.NAME,
                 new String[] {MyBookDBSchema.MyBookHistoryTable.Cols.BOOK_ID},
                 null,
@@ -159,6 +173,7 @@ public class MyBook {
             } while(cursor.moveToNext());
         }
         cursor.close();
+        database.close();
     }
 
     /**
@@ -171,6 +186,7 @@ public class MyBook {
             class Cols {
                 public static final String BOOK_ID = "book_id";
                 public static final String FEELING = "feeling";
+                public static final String DATE = "date";
             }
         }
         class MyBookHistoryTable {
@@ -195,7 +211,8 @@ public class MyBook {
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
             sqLiteDatabase.execSQL("create table " + MyBookDBSchema.MyBookTable.NAME + "(" +
                     MyBookDBSchema.MyBookTable.Cols.BOOK_ID + " integer primary key," +
-                    MyBookDBSchema.MyBookTable.Cols.FEELING +
+                    MyBookDBSchema.MyBookTable.Cols.FEELING + "," +
+                    MyBookDBSchema.MyBookTable.Cols.DATE +
                     ")"
             );
 

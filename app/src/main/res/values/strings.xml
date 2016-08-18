@@ -21,7 +21,16 @@
     <string name="color_pink">분홍</string>
     <string name="color_white">하양</string>
     <string name="feeling_question_text">지금 기분\n어때요?</string>
+
+    <string name="exit_toast">\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.</string>
+    <string name="download_book">추천할 책을 확인하는 중입니다.잠시만 기다려주세요.</string>
+    <string name="failed_login">서버 접속이 원활하지 않습니다.\n잠시 후 다시 시도해주세요.</string>
+    <string name="failed_download_book">추천할 책을 확인하는 도중 오류가 발생했습니다.잠시 후 다시 시도해주세요.</string>
+
+    <string name="error">오류</string>
+    <string name="ok">확인</string>
     <string name="next">다음</string>
+
 
     <string name="title_activity_detail">Detail</string>
 
