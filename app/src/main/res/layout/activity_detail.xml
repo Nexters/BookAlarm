@@ -6,42 +6,59 @@
     app:parallax_factor="1.9"
     tools:context=".DetailActivity" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rootLayout">
+        android:id="@+id/rootLayout"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:id="@+id/topImage"
-            android:layout_alignParentTop="true"
             tools:ignore="HardcodedText"/>
         <RelativeLayout
-            android:layout_width="180dp"
-            android:layout_height="313dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"
-            android:id="@+id/detailCover" />
-        <TextView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:id="@+id/tv2"
-            android:layout_below="@+id/topImage"
-            android:background="@color/white"/>
-        <TextView
+            android:layout_height="100dp"
+            android:background="@color/white">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/d_Title"
+                android:textSize="20sp"
+                android:paddingTop="10dp"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/d_Author"
+                android:textSize="16sp"
+                android:paddingLeft="20dp"
+                android:gravity="top"
+                android:layout_below="@+id/d_Title"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/detailText"
-            android:textSize="18sp"
-            android:lineSpacingExtra="10sp"
-            android:textColor="@color/black"
-            android:background="@android:color/white"
-            android:padding="40dp"
-            tools:ignore="HardcodedText"
-            android:layout_below="@+id/tv2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-    </RelativeLayout>
+            android:background="@color/white">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailText"
+                android:textSize="16sp"
+                android:lineSpacingExtra="10sp"
+                android:textColor="@color/black"
+                android:background="@drawable/textlines"
+                tools:ignore="HardcodedText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 </com.nirhart.parallaxscroll.views.ParallaxScrollView>

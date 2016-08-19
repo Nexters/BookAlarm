@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     LinkagePager cover;
     PagerAdapter coverAdapter;
     LinearLayout mainBack;
-    TextView reSetting;
 
     int endPage; // 마지막 선택
     boolean first;
@@ -97,16 +96,6 @@ public class MainActivity extends AppCompatActivity {
         catch (IOException ioe){
 
         }
-        reSetting = (TextView)findViewById(R.id.reSetting);
-
-        reSetting.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent reset = new Intent(MainActivity.this,SettingActivity.class);
-                startActivity(reset);
-                finish(); // 뒤로 돌아 갈 수 있게 할지 고민..
-            }
-        });
     }
 
     @Override
@@ -193,16 +182,10 @@ public class MainActivity extends AppCompatActivity {
             final View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.cover_item,null);
 
             ImageView image = (ImageView)view.findViewById(R.id.imageView);
-            TextView title = (TextView)view.findViewById(R.id.textView);
-            TextView author = (TextView)view.findViewById(R.id.textView2);
 
             if(position < bookInfos.length ) {
-                Glide.with(MainActivity.this).load(bookInfos[position].getImage()).override(180, 250).into(image);
-                title.setText(bookInfos[position].getTitle());
-                author.setText(bookInfos[position].getAuthor());
+                Glide.with(MainActivity.this).load(bookInfos[position].getImage()).override(155, 223).into(image);
             }
-            title.setTextColor(Color.WHITE);
-            author.setTextColor(Color.WHITE);
 
             container.addView(view);
 
