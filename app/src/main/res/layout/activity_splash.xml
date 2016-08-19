@@ -6,11 +6,13 @@
                                                android:layout_height="match_parent"
                                                android:background="@drawable/loading_image">
     <ImageView
+        android:id="@+id/loading_logo"
         app:layout_widthPercent="50%"
         app:layout_aspectRatio="100%"
         android:layout_centerHorizontal="true"
         app:layout_marginTopPercent="30%"
         android:background="@drawable/loading_logo"
+        android:alpha="0"
         />
 
 </android.support.percent.PercentRelativeLayout>
