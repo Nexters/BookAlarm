@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:id="@+id/mainBack"
     android:orientation="vertical"
-    android:background="@drawable/back"
 
     tools:context="com.nexters.paperfume.MainActivity">
     <RelativeLayout

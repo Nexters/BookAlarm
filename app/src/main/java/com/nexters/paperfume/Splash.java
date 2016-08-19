@@ -73,7 +73,7 @@ public class Splash extends AppCompatActivity {
         MyBook.getInstance().init(getApplicationContext());
 
         setContentView(R.layout.activity_splash);
-
+/*
         final LinearLayout backgroundOne = (LinearLayout) findViewById(R.id.splash);
         final LinearLayout backgroundTwo = (LinearLayout) findViewById(R.id.splash2);
         final RelativeLayout foreground = (RelativeLayout) findViewById(R.id.splash3);
@@ -156,7 +156,7 @@ public class Splash extends AppCompatActivity {
         });
 
         mAnimationSet.start();
-
+*/
         mLoginFailedDialog = new AlertDialog.Builder(Splash.this).create();
         mLoginFailedDialog.setTitle(R.string.error);
         mLoginFailedDialog.setMessage(getResources().getString(R.string.failed_login));
