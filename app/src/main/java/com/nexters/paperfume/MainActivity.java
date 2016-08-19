@@ -36,17 +36,17 @@ import me.crosswall.lib.coverflow.core.LinkagePagerContainer;
 
 public class MainActivity extends AppCompatActivity {
 
-    SecretTextView text;
-    LinkagePager cover;
-    PagerAdapter coverAdapter;
-    LinearLayout mainBack;
+    private SecretTextView text;
+    private LinkagePager cover;
+    private PagerAdapter coverAdapter;
+    private LinearLayout mainBack;
 
-    int endPage; // 마지막 선택
-    boolean first;
+    private int endPage; // 마지막 선택
+    private boolean first;
 
-    Feeling feeling;
-    FragranceInfo fragranceInfo;
-    BookInfo[] bookInfos;
+    private Feeling feeling;
+    private FragranceInfo fragranceInfo;
+    private BookInfo[] bookInfos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
