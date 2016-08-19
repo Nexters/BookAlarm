@@ -30,23 +30,27 @@ public class MyBook {
     public static final int USED_BOOK_HISTORY_COUNT = 12;
 
     private Context mContext;
+    private SQLiteDatabase mDatabase;
     private HashMap<Feeling, BookInfo[]> mMyBooks = new HashMap<Feeling, BookInfo[]>();
     private ArrayList<Integer> mUsedBookHistory = new ArrayList<Integer>(USED_BOOK_HISTORY_COUNT);
-
+    private long mRecentBookHistoryTime = 0L;
     public void init(Context context) {
         mContext = context;
+        mDatabase = new MyBookDBHeler(mContext).getWritableDatabase();
 
         readUsedBookHistory();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        mDatabase.close();
     }
 
     public void resetMyBooks() {
         mMyBooks.clear();
 
-        SQLiteDatabase database = new MyBookDBHeler(mContext).getWritableDatabase();
-
-        database.delete(MyBookDBSchema.MyBookTable.NAME, null, null);
-
-        database.close();
+        mDatabase.delete(MyBookDBSchema.MyBookTable.NAME, null, null);
     }
 
     /**
@@ -56,9 +60,6 @@ public class MyBook {
      * @return 읽어들인 책 리스트
      */
     public BookInfo[] readMyBookInfos(Feeling feeling) {
-        SQLiteDatabase database = new MyBookDBHeler(mContext).getWritableDatabase();
-
-        //mMyBooks.
         BookInfo[] myBooks = mMyBooks.get(feeling);
         if (myBooks != null)
             return myBooks;
@@ -70,7 +71,9 @@ public class MyBook {
 
         mMyBooks.put(feeling,myBooks);
 
-        Cursor cursor = database.query(
+
+
+        Cursor cursor = mDatabase.query(
                 MyBookDBSchema.MyBookTable.NAME,
                 new String[] {MyBookDBSchema.MyBookTable.Cols.BOOK_ID},
                 MyBookDBSchema.MyBookTable.Cols.FEELING + " = ?",
@@ -113,29 +116,36 @@ public class MyBook {
             }
 
             //DB에 내 책 기록
-            database.beginTransaction();
+            mDatabase.beginTransaction();
             try {
-                database.delete(MyBookDBSchema.MyBookTable.NAME,
+                mDatabase.delete(MyBookDBSchema.MyBookTable.NAME,
                         MyBookDBSchema.MyBookTable.Cols.FEELING + " = ?",
                         new String[] {feeling.name()});
                 for( int i = 0 ; i < myBooks_onDB.size() ; i++ ) {
                     ContentValues cv = new ContentValues();
+                    //과거시간으로 변경되었을 경우에 대한 처리
                     long currentTime = System.currentTimeMillis() + i;
+                    if(currentTime < mRecentBookHistoryTime)
+                        currentTime = mRecentBookHistoryTime + i;
+
                     cv.put(MyBookDBSchema.MyBookTable.Cols.BOOK_ID, myBooks_onDB.get(i) );
                     cv.put(MyBookDBSchema.MyBookTable.Cols.FEELING, feeling.name());
                     cv.put(MyBookDBSchema.MyBookTable.Cols.DATE, currentTime);
-                    database.insert(MyBookDBSchema.MyBookTable.NAME,null,cv);
+                    mDatabase.insert(MyBookDBSchema.MyBookTable.NAME,null,cv);
 
                     cv = new ContentValues();
                     cv.put(MyBookDBSchema.MyBookHistoryTable.Cols.BOOK_ID, myBooks_onDB.get(i));
                     cv.put(MyBookDBSchema.MyBookHistoryTable.Cols.DATE, currentTime);
-                    database.insertWithOnConflict(MyBookDBSchema.MyBookHistoryTable.NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+                    mDatabase.insertWithOnConflict(MyBookDBSchema.MyBookHistoryTable.NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
                 }
-                database.setTransactionSuccessful();
+                readUsedBookHistory();
+
+                mDatabase.setTransactionSuccessful();
+
             } catch  (SQLException e){
 
             } finally {
-                database.endTransaction();
+                mDatabase.endTransaction();
             }
 
         }
@@ -146,19 +156,18 @@ public class MyBook {
             myBooks[i].mBookID = myBooks_onDB.get(i);
         }
 
-        database.close();
 
         return myBooks;
     }
 
     private void readUsedBookHistory() {
-        SQLiteDatabase database = new MyBookDBHeler(mContext).getWritableDatabase();
+
 
         mUsedBookHistory.clear();
 
-        Cursor cursor = database.query(
+        Cursor cursor = mDatabase.query(
                 MyBookDBSchema.MyBookHistoryTable.NAME,
-                new String[] {MyBookDBSchema.MyBookHistoryTable.Cols.BOOK_ID},
+                new String[] {MyBookDBSchema.MyBookHistoryTable.Cols.BOOK_ID, MyBookDBSchema.MyBookHistoryTable.Cols.DATE},
                 null,
                 null,
                 null,
@@ -170,10 +179,13 @@ public class MyBook {
         if(cursor.moveToFirst()) {
             do {
                 mUsedBookHistory.add(cursor.getInt(0));
+                long time = cursor.getLong(1);
+                if(mRecentBookHistoryTime < time)
+                    mRecentBookHistoryTime = time;
+
             } while(cursor.moveToNext());
         }
         cursor.close();
-        database.close();
     }
 
     /**

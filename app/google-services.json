@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "724111273121-6orbhskoiioid377rf8tjspilblgkt4n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nexters.paperfume",
+            "certificate_hash": "BC1346E10E4E2AC72087AB26F536A056051A339C"
+          }
+        },
+        {
           "client_id": "724111273121-hku31am138jmsq3ihgi7n8makf9b6n4s.apps.googleusercontent.com",
           "client_type": 3
         }
