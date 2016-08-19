@@ -1,13 +1,14 @@
 package com.nexters.paperfume;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,12 +16,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.nexters.paperfume.content.Status;
@@ -39,14 +37,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by user on 2016-07-27.
@@ -55,16 +52,20 @@ import java.util.LinkedList;
 public class PerfumeActivity extends AppCompatActivity {
 
     private static boolean active = false;
+    private static final String TAG = "PerfumeActivity";
 
-    Button button;
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+    private Button button;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private BookInfo[] mBookInfos;
     private LinkedList<StorageTask<FileDownloadTask.TaskSnapshot>> mStorageTasks = new LinkedList<StorageTask<FileDownloadTask.TaskSnapshot>>();
     private ProgressDialog mLoadingDialog;
     private AlertDialog mFailedDialog;
+    private Handler mFailedDownloadHandler;
+    private Timer mTimerForDownloadingCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_perfume);
         View imageView = findViewById(R.id.image_activity_perfume);
@@ -90,7 +91,7 @@ public class PerfumeActivity extends AppCompatActivity {
 
         Feeling feeling = Status.getInstance().getCurrentFeeling();
         FragranceInfo fragranceInfo = FragranceManager.getInstance().getFragrance(feeling);
-        final BookInfo[] bookInfos = MyBook.getInstance().readMyBookInfos(feeling);
+        mBookInfos = MyBook.getInstance().readMyBookInfos(feeling);
 
         //폰트 설정
         button.setTypeface(CustomFont.getInstance().getTypeface());
@@ -121,67 +122,65 @@ public class PerfumeActivity extends AppCompatActivity {
 
         fragranceGuide.setText(sFragranceGuide);
 
-        storage.setMaxDownloadRetryTimeMillis(2000);
-        final StorageReference storageRef = storage.getReferenceFromUrl("gs://nexters-paperfume.appspot.com");
+        //이 단계에서 미리 로딩하는 프로세스를 실행해 둔다.
+        loadBookData(mBookInfos);
 
+        //책데이터 로딩 취소
+        mFailedDownloadHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                if(mFailedDialog.isShowing())
+                    return true;
+                mLoadingDialog.dismiss();
+                mFailedDialog.show();
+                return true;
+            }
+        });
 
         button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mStorageTasks.clear();
                 mLoadingDialog = ProgressDialog.show(PerfumeActivity.this, null, getResources().getString(R.string.download_book) , true);
-                //변수에 책 데이터가 아직 남아있는지 확인
                 //모든 책의 로딩이 완료되었다면 다음 액티비티로 이동
-                if(checkBookDataLoadComplete(bookInfos)) {
+                if(checkBookDataLoadComplete(mBookInfos)) {
                     startMainActivity();
                 } else {
-                    //파일로부터 책 데이터 read
-                    for (final BookInfo bookInfo : bookInfos) {
+                    //다운로드 완료체크 핸들러 시작..
 
-                        if(true == bookInfo.isLoadedBookData())
-                            continue;
-
-                        final File cacheFile = new File(getApplicationContext().getCacheDir(), "book_data_" + bookInfo.getBookID() + ".json");
-                        //책 파일이 북데이터 디렉토리에 남아있는지 확인
-                        if (true == cacheFile.exists() && true == cacheFile.canRead()) {
-                            if(false == readCachedBookData(cacheFile, bookInfo) ) {
-                                cancelReadBookData();
-                                break;
+                    TimerTask downloadCheckTask = new TimerTask() {
+                        long mLastTransferred;
+                        int mZeroTransferredOccurCount = 0;
+                        @Override
+                        public void run() {
+                            long currentTransferred = 0;
+                            for(StorageTask<FileDownloadTask.TaskSnapshot> task :  mStorageTasks) {
+                                currentTransferred += task.getSnapshot().getBytesTransferred();
                             }
-                            //모든 책의 로딩이 완료되었다면 다음 액티비티로 이동
-                            if (checkBookDataLoadComplete(bookInfos))
+
+                            if(checkBookDataLoadComplete(mBookInfos)) {
+                                mTimerForDownloadingCheck.cancel();
                                 startMainActivity();
-                        } else {
-                            //책 파일이 없으면 Firebase Storage 로부터 다운로드
-                            try {
-                                cacheFile.createNewFile();
-                                StorageReference ref = storageRef.child("book_data/" + String.valueOf(bookInfo.getBookID()) + ".json");
-                                mStorageTasks.add(ref.getFile(cacheFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-                                        Log.d("PAPERFUME","sucess book loading");
-                                        if(false == readCachedBookData(cacheFile, bookInfo) ) {
-                                            cancelReadBookData();
-                                        }
-                                        //모든 책의 로딩이 완료되었다면 다음 액티비티로 이동
-                                        else if (checkBookDataLoadComplete(bookInfos))
-                                            startMainActivity();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(Exception e) {
-                                        Log.e("fail?", "?" + e.getMessage());
-                                        cancelReadBookData();
-                                    }
-                                }));
-                            } catch( IOException e ) {
-                                e.printStackTrace();
-                                cancelReadBookData();
                             }
-                        }
+                            else if(this.mLastTransferred == currentTransferred) {
+                                //네트워크가 끊어져서 다운로드를 받지 못하는 상황?
+                                this.mZeroTransferredOccurCount++;
+                                if(mZeroTransferredOccurCount > 3) {
+                                    //다운로드를 받지 못하는 상황이 3회 이상되면..에러처리
+                                    mTimerForDownloadingCheck.cancel();
+                                    mFailedDownloadHandler.sendEmptyMessage(0);
+                                }
+                            }
+                            else {
+                                //다운로드 중....
+                                this.mZeroTransferredOccurCount = 0;
+                                this.mLastTransferred = currentTransferred;
+                            }
 
-                    }
+
+                        }
+                    };
+                    mTimerForDownloadingCheck = new Timer(false);
+                    mTimerForDownloadingCheck.schedule(downloadCheckTask, 2000L, 2000L);
                 }
             }
         });
@@ -200,8 +199,15 @@ public class PerfumeActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     public void backButtonClick(View view){
@@ -272,22 +278,64 @@ public class PerfumeActivity extends AppCompatActivity {
         return complete;
     }
 
-    public void cancelReadBookData() {
-        for(StorageTask<FileDownloadTask.TaskSnapshot> task : mStorageTasks) {
-            if( false == task.isComplete() ){
-                task.cancel();
-            }
-        }
-        mLoadingDialog.dismiss();
-        mFailedDialog.show();
-    }
-
     public void startMainActivity(){
         mLoadingDialog.dismiss();
         if(active) {
             Intent mainIntent = new Intent(PerfumeActivity.this, MainActivity.class);
             startActivity(mainIntent);
             finish();
+        }
+    }
+
+    public void loadBookData(final BookInfo[] bookInfos) {
+        final StorageReference storageRef = storage.getReferenceFromUrl("gs://nexters-paperfume.appspot.com");
+        for (final BookInfo bookInfo : bookInfos) {
+
+            if(true == bookInfo.isLoadedBookData())
+                continue;
+
+            final File cacheFile = new File(getApplicationContext().getCacheDir(), "book_data_" + bookInfo.getBookID() + ".json");
+            //책 파일이 북데이터 디렉토리에 남아있는지 확인
+            if (true == cacheFile.exists() && true == cacheFile.canRead() && 0 < cacheFile.length() ) {
+                readCachedBookData(cacheFile, bookInfo);
+            } else {
+                //책 파일이 없으면 Firebase Storage 로부터 다운로드
+                StorageReference ref = storageRef.child("book_data/" + String.valueOf(bookInfo.getBookID()) + ".json");
+                String name = ref.getName();
+                boolean existTask = false;
+                //이미 진행중인 download task 라면 추가 task 는 생략한다.
+                for(StorageTask<FileDownloadTask.TaskSnapshot> task :  ref.getActiveDownloadTasks()) {
+                    Log.d(TAG, task.getSnapshot().getStorage().getName());
+                    Log.d(TAG, name);
+                    if( task.getSnapshot().getStorage().getName().equals( name ) ) {
+                        existTask = true;
+                        break;
+                    }
+                }
+                if(true == existTask) {
+                    Log.d(TAG, "continued download file - " + name);
+                    continue;
+                }
+
+                try {
+                    cacheFile.createNewFile();
+                    FileDownloadTask task = ref.getFile(cacheFile);
+
+                    mStorageTasks.add(task);
+
+                    task.addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Log.d(TAG, "sucess book loading");
+                            readCachedBookData(cacheFile, bookInfo);
+                        }
+                    });
+
+                } catch( IOException e ) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 

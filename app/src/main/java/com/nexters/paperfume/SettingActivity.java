@@ -95,6 +95,11 @@ public class SettingActivity extends AppCompatActivity implements SettingListene
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     public void backButtonClick(View view){
         onBackPressed();
     }

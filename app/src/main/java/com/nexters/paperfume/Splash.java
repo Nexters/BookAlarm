@@ -77,7 +77,7 @@ public class Splash extends AppCompatActivity {
 
         final ImageView loadingLogo = (ImageView) findViewById(R.id.loading_logo);
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(loadingLogo,"alpha",0.0f, 1.0f);
-        fadeIn.setStartDelay(1000L);
+        fadeIn.setStartDelay(1500L);
         fadeIn.setDuration(2000L);
 
         fadeIn.start();
@@ -179,6 +179,7 @@ public class Splash extends AppCompatActivity {
                         if(checkPlayService()) {
                             long elapsedTime = getElapsedCpuTime() - mElapsedCpuTimeAtOnCreate;
                             long delayTime = MIN_SPLASH_VIEW_TIME - elapsedTime;
+                            Log.d(TAG, "DEALY TIME" + delayTime);
                             if(delayTime < 0)
                                 mSplashEndHander.sendEmptyMessage(0);
                             else
