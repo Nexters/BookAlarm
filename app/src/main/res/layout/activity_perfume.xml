@@ -1,43 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/layout_activity_perfume"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/image_activity_perfume"
-            android:layout_weight="2.2"/>
+    <View
+        app:layout_widthPercent="100%"
+        app:layout_aspectRatio="80%"
+        android:id="@+id/activity_perfume__image"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+    <TextView
+        android:textSize="15sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_perfume__image"
+        android:layout_marginTop="20dp"
+        android:id="@+id/fragrance_guide"
+        android:textAlignment="center"/>
 
-            <TextView
-                android:textSize="15sp"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:id="@+id/fragrance_guide"
-                android:gravity="center"
-                android:layout_weight="1.2"/>
+    <Button
+        android:textSize="18sp"
+        android:text="책 추천받기"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/getting_books"
+        android:background="@color/transpaernt"
+        />
 
-            <Button
-                android:textSize="18sp"
-                android:text="책 추천받기"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.8"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="20dp"
-                android:id="@+id/getting_books"
-                android:background="@color/transpaernt"
-                />
-
-        </LinearLayout>
-    </LinearLayout>
+    </android.support.percent.PercentRelativeLayout>

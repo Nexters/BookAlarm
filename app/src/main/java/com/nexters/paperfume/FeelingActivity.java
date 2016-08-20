@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.nexters.paperfume.content.Status;
 import com.nexters.paperfume.enums.Feeling;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 
 public class FeelingActivity extends AppCompatActivity {
     Button button;
-    RadioGroup radioGroup;
     ArrayList<RadioButton> mRadioButtons = new ArrayList<RadioButton>();
     private Feeling feeling;
     private BackPressCloseHandler backPressCloseHandler;
@@ -34,8 +32,6 @@ public class FeelingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feeling);
         button = (Button) findViewById(R.id.feeling_button);
         button.setVisibility(View.INVISIBLE);
-        radioGroup = (RadioGroup) findViewById(R.id.feeling_group);
-        radioGroup.setOnCheckedChangeListener(radioGroup_Listner);
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         //폰트 설정, 버튼들 하드코딩...(RadioGroup 이 child layout 처리를 못해줌 )
@@ -122,15 +118,6 @@ public class FeelingActivity extends AppCompatActivity {
             }
         });
     }
-
-    RadioGroup.OnCheckedChangeListener radioGroup_Listner = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            if(i != -1 ){
-                button.setVisibility(View.VISIBLE);
-            }
-        }
-    };
 
     @Override
     public void onBackPressed() {

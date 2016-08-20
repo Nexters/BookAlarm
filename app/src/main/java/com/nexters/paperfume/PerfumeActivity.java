@@ -68,7 +68,7 @@ public class PerfumeActivity extends AppCompatActivity {
 super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_perfume);
-        View imageView = findViewById(R.id.image_activity_perfume);
+        View imageView = findViewById(R.id.activity_perfume__image);
         button = (Button) findViewById(R.id.getting_books);
         TextView fragranceGuide = (TextView) findViewById(R.id.fragrance_guide);
 

@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/logo_s"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="3dp"/>
+        android:layout_marginTop="28dp"/>
 
 
     <TextView
@@ -114,7 +114,7 @@
 
     <Button
         android:text="@string/next"
-        android:background="@color/white"
+        android:background="@color/transpaernt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
