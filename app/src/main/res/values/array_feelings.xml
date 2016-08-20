@@ -1,37 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="feeling_happy">
-        <item>난 무엇이든지 이해할 수 있어.</item>
-        <item>난 무엇이든지 할 수 있어.</item>
-        <item>행복이 활짝 피어나고 있어.</item>
-        <item>달콤하고 부드럽고 따뜻해.</item>
-        <item>새로운 기대감으로 설렘이 가득해.</item>
-        <item>짜릿한 전율과 긴장감이 느껴져.</item>
-        <item>너무 신나는 순간이야.</item>
+
     </string-array>
     <string-array name="feeling_miss">
-        <item>멍하니 먼산을 바라보고 있어...</item>
-        <item>예전의 추억을 회상하고 있어..</item>
-        <item>좋았던 그 시절을 떠올리고 있어..</item>
-        <item>가지 못했던 그 길을 생각해보고 있어..</item>
-        <item>나의 소중한 추억이 담긴 장소에 가보고 싶어..</item>
+
     </string-array>
     <string-array name="feeling_groomy">
-        <item>어떻게 해야될지 모르겠어...</item>
-        <item>전혀 확신이 들지 않아...</item>
-        <item>아무것도 못하는 내 자신이 원망스러워...</item>
-        <item>무작정 기다릴 수밖에 없나...</item>
-        <item>나도 모르게 눈시울이 붉어지고 있어...</item>
-        <item>모든 게 부질없다고 느껴져...</item>
-        <item>초조하고 불안해...</item>
-        <item>정말 당황스러워..</item>
+
     </string-array>
     <string-array name="feeling_stifled">
-        <item>왜 이런건지 이해할 수가 없어.</item>
-        <item>어떻게 그럴수가 있는건지 모르겠어.</item>
-        <item>너무 답답해..짜증나.</item>
-        <item>지친다..이젠 화를 낼 기운조차 없어.</item>
-        <item>나만 이런 불만을 가지고 있는건지 궁금해.</item>
-        <item>왜 이렇게 나를 못살게 구는건지 모르겠어.</item>
+
     </string-array>
 </resources>

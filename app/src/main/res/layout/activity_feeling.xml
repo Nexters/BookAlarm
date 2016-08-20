@@ -1,98 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_feeling">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/logo_s"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"/>
+
 
     <TextView
         android:text="@string/feeling_question_text"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:gravity="start"
-        android:layout_marginLeft="230.7dp"
-        android:layout_marginTop="17.7dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:textColor="@color/black"
         android:id="@+id/feeling_text" />
 
     <RadioGroup
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setting_blood_text"
         android:orientation="vertical"
         android:id="@+id/feeling_group"
-        android:layout_marginLeft="201.7dp"
-        android:layout_marginTop="148.7dp">
+        android:layout_marginTop="294dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <RadioButton
+                android:text="@string/feeling_hqppy"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/feeling_happy"
+                android:button="@null"
+                android:textColor="@drawable/radio_text"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="10dp"/>
 
-        <RadioButton
-            android:text="행복해요"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
+            <RadioButton
+                android:text="@string/feeling_miss"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/feeling_miss"
+                android:button="@null"
+                android:textColor="@drawable/radio_text"
+                android:drawableLeft="@drawable/radio_button"
+                android:drawablePadding="10dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginStart="70dp"/>
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="39.7dp"
-            android:id="@+id/feeling_happy"
-            android:button="@null"
-            android:textColor="@drawable/radio_text"
-            android:drawableLeft="@drawable/radio_button"
-            android:drawablePadding="9.4dp"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="67dp">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/feeling_groomy"
+                    android:text="@string/feeling_groomy"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:textColor="@drawable/radio_text"
+                    android:drawableLeft="@drawable/radio_button"
+                    android:drawablePadding="10dp"/>
 
-        <RadioButton
-            android:text="그리워요"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="39.7dp"
-            android:id="@+id/feeling_miss"
-            android:button="@null"
-            android:textColor="@drawable/radio_text"
-            android:drawableLeft="@drawable/radio_button"
-            android:drawablePadding="9.4dp"/>
-        <RadioButton
-            android:text="우울해요"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="39.7dp"
-            android:id="@+id/feeling_groomy"
-            android:button="@null"
-            android:textColor="@drawable/radio_text"
-            android:drawableLeft="@drawable/radio_button"
-            android:drawablePadding="9.4dp"/>
-
-        <RadioButton
-            android:text="답답해요"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/feeling_stifled"
-            android:button="@null"
-            android:textColor="@drawable/radio_text"
-            android:drawableLeft="@drawable/radio_button"
-            android:drawablePadding="9.4dp"/>
+                <RadioButton
+                    android:id="@+id/feeling_stifled"
+                    android:text="@string/feeling_stifled"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:textColor="@drawable/radio_text"
+                    android:drawableLeft="@drawable/radio_button"
+                    android:drawablePadding="10dp"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginStart="70dp"/>
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
     </RadioGroup>
+
     <Button
         android:text="@string/next"
-        android:alpha="0.6"
-        android:background="@drawable/button_custom"
-        android:textColor="#ffffff"
+        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="55.3dp"
+        android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:id="@+id/feeling_button"/>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="backButtonClick"
-        android:src="@drawable/back_black"
-        android:background="@android:color/transparent"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="17.7dp"
-        android:id="@+id/back_button" />
 
 </RelativeLayout>

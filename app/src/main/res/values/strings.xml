@@ -20,7 +20,11 @@
     <string name="color_red">빨강</string>
     <string name="color_pink">분홍</string>
     <string name="color_white">하양</string>
-    <string name="feeling_question_text">지금 기분\n어때요?</string>
+    <string name="feeling_question_text">지금 기분이 어때요?</string>
+    <string name="feeling_hqppy">행복해요</string>
+    <string name="feeling_miss">그리워요</string>
+    <string name="feeling_groomy">우울해요</string>
+    <string name="feeling_stifled">답답해요</string>
 
     <string name="exit_toast">\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.</string>
     <string name="download_book">추천할 책을 확인하는 중입니다.잠시만 기다려주세요.</string>
