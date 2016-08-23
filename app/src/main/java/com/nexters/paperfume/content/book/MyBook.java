@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.nexters.paperfume.App;
 import com.nexters.paperfume.enums.Feeling;
 
 import java.util.ArrayList;
@@ -23,23 +24,19 @@ public class MyBook {
     }
 
     private MyBook() {
+        mDatabase = new MyBookDBHeler(App.getInstance().getApplicationContext()).getWritableDatabase();
 
+        readUsedBookHistory();
     }
 
     public static final int MY_BOOK_COUNT_BY_FEELING = 3;
     public static final int USED_BOOK_HISTORY_COUNT = 12;
 
-    private Context mContext;
     private SQLiteDatabase mDatabase;
     private HashMap<Feeling, BookInfo[]> mMyBooks = new HashMap<Feeling, BookInfo[]>();
     private ArrayList<Integer> mUsedBookHistory = new ArrayList<Integer>(USED_BOOK_HISTORY_COUNT);
     private long mRecentBookHistoryTime = 0L;
-    public void init(Context context) {
-        mContext = context;
-        mDatabase = new MyBookDBHeler(mContext).getWritableDatabase();
 
-        readUsedBookHistory();
-    }
 
     @Override
     protected void finalize() throws Throwable {

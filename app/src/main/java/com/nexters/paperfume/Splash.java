@@ -50,28 +50,15 @@ public class Splash extends AppCompatActivity {
     public static final String  TAG = "SPLASH";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final long MIN_SPLASH_VIEW_TIME = 3000L;
-    private static final long MAX_SPLASH_VIEW_TIME = 10000L;
+    private static final long MAX_SPLASH_VIEW_TIME = 20000L;
 
     private Handler mSplashEndHander;
     private AlertDialog mLoginFailedDialog;
     private long mElapsedCpuTimeAtOnCreate;
-    private boolean mRetrievedRecommendBookData = false;;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /**
-         * Splash Activity 실행시, 글로벌하게 사용되는 객체들의 초기화를 진행한다.
-         */
-
-        //SharedPreferenceManager 초기화
-        SharedPreferenceManager.getInstance().init(getApplicationContext());
-        //FragranceManager 초기화
-        FragranceManager.getInstance().init(getResources(), getAssets());
-        //CustomFont 초기화
-        CustomFont.getInstance().init(getAssets());
-        //MyBook 초기화
-        MyBook.getInstance().init(getApplicationContext());
 
         setContentView(R.layout.activity_splash);
 
@@ -85,14 +72,21 @@ public class Splash extends AppCompatActivity {
         mLoginFailedDialog = new AlertDialog.Builder(Splash.this).create();
         mLoginFailedDialog.setTitle(R.string.error);
         mLoginFailedDialog.setMessage(getResources().getString(R.string.failed_login));
+        mLoginFailedDialog.setCanceledOnTouchOutside(true);
         mLoginFailedDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getResources().getText(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        ProcessHelper.Exit();
+                        dialogInterface.cancel();
                     }
                 });
+        mLoginFailedDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                dialogInterface.dismiss();
+                ProcessHelper.Exit();
+            }
+        });
 
         mSplashEndHander = new android.os.Handler(){
             boolean mAlreadyCalled = false;
@@ -103,7 +97,7 @@ public class Splash extends AppCompatActivity {
                     return;
                 mAlreadyCalled = true;
 
-                if(false == mRetrievedRecommendBookData) {
+                if(0 == msg.what) {
                     processLoginFail();
                     return;
                 }
@@ -174,16 +168,14 @@ public class Splash extends AppCompatActivity {
 
                         FeaturedBook.getInstance().shuffle();
 
-                        mRetrievedRecommendBookData = true;
-
                         if(checkPlayService()) {
                             long elapsedTime = getElapsedCpuTime() - mElapsedCpuTimeAtOnCreate;
                             long delayTime = MIN_SPLASH_VIEW_TIME - elapsedTime;
                             Log.d(TAG, "DEALY TIME" + delayTime);
                             if(delayTime < 0)
-                                mSplashEndHander.sendEmptyMessage(0);
+                                mSplashEndHander.sendEmptyMessage(1);
                             else
-                                mSplashEndHander.sendEmptyMessageDelayed(0, delayTime);
+                                mSplashEndHander.sendEmptyMessageDelayed(1, delayTime);
                         }
                     }
 
@@ -210,12 +202,13 @@ public class Splash extends AppCompatActivity {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
+            processLoginFail();
+
             if (apiAvailability.isUserResolvableError(resultCode)) {
                 apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
                         .show();
             } else {
                 Log.i(TAG, "This device is not supported.");
-                ProcessHelper.Exit();
             }
             return false;
         }
