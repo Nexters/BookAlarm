@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical" android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_age">
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="17.7dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:id="@+id/setting_age_text"
-        android:textSize="23.3sp"
-        android:textColor="#FFFFFF"
-        android:text="@string/age_question_text" />
+        android:background="@drawable/logo_s"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"/>
+
+
+    <TextView
+        android:text="@string/age_question_text"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:textColor="@color/black"
+        android:id="@+id/age_text" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -23,34 +27,27 @@
         android:gravity="center"
         android:cursorVisible="false"
         android:inputType="number"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:ems="13"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="212dp"
         android:layout_centerHorizontal="true"
-        android:background="#FFFFFF"
+        android:paddingLeft="137dp"
+        android:paddingRight="137dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/edittext_border"
         android:id="@+id/setting_age_edit" />
 
     <Button
         android:text="@string/next"
-        android:background="@drawable/button_custom"
+        android:background="@color/transpaernt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="55.3dp"
+        android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/setting_age_button"
         android:textAlignment="center"
-        android:textSize="16sp"
-        android:textColor="#ffffff"/>
+        android:textSize="18sp"
+        android:id="@+id/setting_age_button"/>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/back_white"
-        android:onClick="backButtonClick"
-        android:background="@android:color/transparent"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="17.7dp"
-        android:id="@+id/back_button" />
 </RelativeLayout>

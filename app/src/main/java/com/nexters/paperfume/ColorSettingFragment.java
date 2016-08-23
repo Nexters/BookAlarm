@@ -8,7 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.nexters.paperfume.util.CustomFont;
+
+import java.util.ArrayList;
 
 /**
  * Created by user on 2016-07-24.
@@ -17,118 +22,166 @@ import android.widget.RadioGroup;
 public class ColorSettingFragment extends Fragment{
 
     SettingListener mCallback;
-    RadioGroup radioGroup1;
-    RadioGroup radioGroup2;
-    RadioGroup radioGroup3;
     Button button;
-    private boolean isChecking = true;
-    private int mCheckId;
+    ArrayList<RadioButton> mRadioButtons = new ArrayList<RadioButton>();
     private String color;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setting_color, container, false);
-        radioGroup1 = (RadioGroup)view.findViewById(R.id.setting_color_group1);
-        radioGroup1.setOnCheckedChangeListener(radioGroup1_Listner);
-        radioGroup2 = (RadioGroup)view.findViewById(R.id.setting_color_group2);
-        radioGroup2.setOnCheckedChangeListener(radioGroup2_Listner);
-        radioGroup3 = (RadioGroup)view.findViewById(R.id.setting_color_group3);
-        radioGroup3.setOnCheckedChangeListener(radioGroup3_Listner);
         button = (Button)view.findViewById(R.id.setting_color_button);
         button.setVisibility(View.INVISIBLE);
+
+        //폰트 설정, 버튼들 하드코딩...(RadioGroup 이 child layout 처리를 못해줌 )
+        {
+            RadioButton radioButton = null;
+
+            for(int i = 0 ; i < 9 ; i++)
+            {
+                switch(i) {
+                    case 0:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_black);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "black";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 1:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_purple);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "purple";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 2:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_green);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "green";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 3:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_sky);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "sky";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 4:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_blue);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "blue";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 5:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_yellow);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "yellow";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 6:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_red);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "red";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 7:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_pink);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "pink";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 8:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_color_white);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                color = "white";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                }
+
+                if(radioButton != null) {
+                    radioButton.setTypeface(CustomFont.getInstance().getTypeface());
+                    mRadioButtons.add(radioButton);
+                }
+            }
+        }
 
         button.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
-                switch (mCheckId) {
-                    case R.id.setting_color_black:
-                        color = "검정";
-                        break;
-                    case R.id.setting_color_blue:
-                        color = "파랑";
-                        break;
-                    case R.id.setting_color_green:
-                        color = "초록";
-                        break;
-                    case R.id.setting_color_pink:
-                        color = "분홍";
-                        break;
-                    case R.id.setting_color_purple:
-                        color = "보라";
-                        break;
-                    case R.id.setting_color_red:
-                        color = "빨강";
-                        break;
-                    case R.id.setting_color_sky:
-                        color = "하늘";
-                        break;
-                    case R.id.setting_color_white:
-                        color = "하양";
-                        break;
-                    case R.id.setting_color_yelow:
-                        color = "노랑";
-                        break;
-                }
                 mCallback.colorSetting(view,color);
             }
         });
         return view;
     }
-
-    RadioGroup.OnCheckedChangeListener radioGroup1_Listner = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            if(i != -1 && isChecking){
-                button.setVisibility(View.VISIBLE);
-                isChecking = false;
-                radioGroup2.setOnCheckedChangeListener(null);
-                radioGroup3.setOnCheckedChangeListener(null);
-                radioGroup2.clearCheck();
-                radioGroup3.clearCheck();
-                radioGroup2.setOnCheckedChangeListener(radioGroup2_Listner);
-                radioGroup3.setOnCheckedChangeListener(radioGroup3_Listner);
-                mCheckId = i;
-            }
-            isChecking = true;
-        }
-    };
-
-    RadioGroup.OnCheckedChangeListener radioGroup2_Listner = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            if(i != -1 && isChecking){
-                button.setVisibility(View.VISIBLE);
-                isChecking = false;
-                radioGroup1.setOnCheckedChangeListener(null);
-                radioGroup3.setOnCheckedChangeListener(null);
-                radioGroup1.clearCheck();
-                radioGroup3.clearCheck();
-                radioGroup1.setOnCheckedChangeListener(radioGroup1_Listner);
-                radioGroup3.setOnCheckedChangeListener(radioGroup3_Listner);
-                mCheckId = i;
-            }
-            isChecking = true;
-        }
-    };
-
-    RadioGroup.OnCheckedChangeListener radioGroup3_Listner = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            if(i != -1 && isChecking){
-                button.setVisibility(View.VISIBLE);
-                isChecking = false;
-                radioGroup2.setOnCheckedChangeListener(null);
-                radioGroup1.setOnCheckedChangeListener(null);
-                radioGroup2.clearCheck();
-                radioGroup1.clearCheck();
-                radioGroup2.setOnCheckedChangeListener(radioGroup2_Listner);
-                radioGroup1.setOnCheckedChangeListener(radioGroup1_Listner);
-                mCheckId = i;
-            }
-            isChecking = true;
-        }
-    };
-
 
     @Override
     public void onAttach(Activity activity) {

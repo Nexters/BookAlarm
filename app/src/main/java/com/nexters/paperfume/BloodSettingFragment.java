@@ -2,6 +2,7 @@ package com.nexters.paperfume;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,12 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.nexters.paperfume.content.Status;
+import com.nexters.paperfume.enums.Feeling;
+import com.nexters.paperfume.util.CustomFont;
+
+import java.util.ArrayList;
+
 /**
  * Created by user on 2016-07-24.
  */
@@ -21,6 +28,7 @@ public class BloodSettingFragment extends Fragment{
     SettingListener mCallback;
     Button button;
     RadioGroup radioGroup;
+    ArrayList<RadioButton> mRadioButtons = new ArrayList<RadioButton>();
     private  String blood;
 
     @Override
@@ -31,39 +39,86 @@ public class BloodSettingFragment extends Fragment{
         Log.d("View.INVISIBLE",String.valueOf(View.INVISIBLE));
         button.setVisibility(View.INVISIBLE);
 
-        radioGroup.setOnCheckedChangeListener(radioGroup_Listner);
+        //폰트 설정, 버튼들 하드코딩...(RadioGroup 이 child layout 처리를 못해줌 )
+        {
+            RadioButton radioButton = null;
+
+            for(int i = 0 ; i < 4 ; i++)
+            {
+                switch(i) {
+                    case 0:
+                        radioButton = (RadioButton) view.findViewById(R.id.blood_A);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                blood = "A";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 1:
+                        radioButton = (RadioButton) view.findViewById(R.id.blood_B);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                blood = "B";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 2:
+                        radioButton = (RadioButton) view.findViewById(R.id.blood_O);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                blood = "O";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 3:
+                        radioButton = (RadioButton) view.findViewById(R.id.blood_AB);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                blood = "AB";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                }
+
+                if(radioButton != null) {
+                    radioButton.setTypeface(CustomFont.getInstance().getTypeface());
+                    mRadioButtons.add(radioButton);
+                }
+            }
+        }
+
         button.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
-                switch (radioGroup.getCheckedRadioButtonId()) {
-                    case R.id.setting_blood_o:
-                        blood = "O형";
-                        break;
-                    case R.id.setting_blood_b:
-                        blood = "B형";
-                        break;
-                    case R.id.setting_blood_a:
-                        blood = "A형";
-                        break;
-                    case R.id.setting_blood_ab:
-                        blood = "AB형";
-                        break;
-                }
                 mCallback.bloodSetting(view,blood);
             }
         });
         return view;
     }
-
-    RadioGroup.OnCheckedChangeListener radioGroup_Listner = new RadioGroup.OnCheckedChangeListener(){
-        @Override
-        public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            if(i != -1 ){
-                Log.d("View.VISIBLE",String.valueOf(View.VISIBLE));
-                button.setVisibility(View.VISIBLE);
-            }
-        }
-    };
 
     @Override
     public void onAttach(Activity activity) {

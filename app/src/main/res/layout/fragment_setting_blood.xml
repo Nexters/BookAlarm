@@ -1,102 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_blood">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/logo_s"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"/>
+
 
     <TextView
+        android:text="@string/blood_question_text"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="250dp"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="17.7dp"
-        android:id="@+id/setting_blood_text"
-        android:textColor="#000000"
-        android:text="@string/blood_question_text"
-        android:textSize="23.3sp"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:textColor="@color/black"
+        android:id="@+id/blood_text" />
 
     <RadioGroup
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/setting_blood_text"
         android:orientation="vertical"
         android:id="@+id/setting_blood_group"
-        android:layout_marginLeft="221dp"
-        android:layout_marginTop="144.7dp"
-        >
-
-        <RadioButton
-            android:id="@+id/setting_blood_o"
-            android:layout_width="wrap_content"
+        android:layout_marginTop="294dp">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/blood_A"
-            android:textSize="20sp"
-            android:layout_marginBottom="25dp"
-            android:button="@null"
-            android:textColor="@drawable/radio_text"
-            android:drawableLeft="@drawable/radio_button"
-            android:drawablePadding="9.4dp"/>
+            android:orientation="horizontal">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:text="@string/blood_A"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/blood_A"
+                    android:button="@null"
+                    android:textColor="@drawable/radio_text"
+                    android:drawableLeft="@drawable/radio_button"
+                    android:drawablePadding="10dp"/>
 
-        <RadioButton
-            android:id="@+id/setting_blood_b"
-            android:layout_width="wrap_content"
+                <RadioButton
+                    android:text="@string/blood_O"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/blood_O"
+                    android:button="@null"
+                    android:textColor="@drawable/radio_text"
+                    android:drawableLeft="@drawable/radio_button"
+                    android:drawablePadding="10dp"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginStart="70dp"/>
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/blood_B"
-            android:textSize="20sp"
-            android:layout_marginBottom="25dp"
-            android:button="@null"
-            android:textColor="@drawable/radio_text"
-            android:drawableLeft="@drawable/radio_button"
-            android:drawablePadding="9.4dp"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="67dp">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/blood_B"
+                    android:text="@string/blood_B"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:textColor="@drawable/radio_text"
+                    android:drawableLeft="@drawable/radio_button"
+                    android:drawablePadding="10dp"/>
 
-        <RadioButton
-            android:id="@+id/setting_blood_a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/blood_O"
-            android:textSize="20sp"
-            android:layout_marginBottom="25dp"
-            android:button="@null"
-            android:textColor="@drawable/radio_text"
-            android:drawableLeft="@drawable/radio_button"
-            android:drawablePadding="9.4dp"/>
-
-        <RadioButton
-            android:id="@+id/setting_blood_ab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/blood_AB"
-            android:textSize="20sp"
-            android:button="@null"
-            android:textColor="@drawable/radio_text"
-            android:drawableLeft="@drawable/radio_button"
-            android:drawablePadding="9.4dp"/>
+                <RadioButton
+                    android:id="@+id/blood_AB"
+                    android:text="@string/blood_AB"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:textColor="@drawable/radio_text"
+                    android:drawableLeft="@drawable/radio_button"
+                    android:drawablePadding="10dp"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginStart="70dp"/>
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
     </RadioGroup>
 
     <Button
         android:text="@string/next"
-        android:alpha="0.6"
-        android:textColor="#ffffff"
+        android:background="@color/transpaernt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_custom"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="55.3dp"
+        android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/setting_blood_button"
         android:textAlignment="center"
-        android:textSize="16sp"
-        />
+        android:textSize="18sp"
+        android:id="@+id/setting_blood_button"/>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/back_black"
-        android:background="@android:color/transparent"
-        android:onClick="backButtonClick"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="17.7dp"
-        android:id="@+id/back_button" />
 </RelativeLayout>

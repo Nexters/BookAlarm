@@ -13,6 +13,10 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.nexters.paperfume.util.CustomFont;
+
+import java.util.ArrayList;
+
 /**
  * Created by user on 2016-07-24.
  */
@@ -22,46 +26,69 @@ public class GenderSettingFragment extends Fragment{
     RadioGroup radioGroup;
     Button button;
     SettingListener mCallback;
+    ArrayList<RadioButton> mRadioButtons = new ArrayList<RadioButton>();
     private String gender;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_setting_gender, container, false);
-        radioGroup = (RadioGroup)view.findViewById(R.id.setting_gender_group);
         button = (Button)view.findViewById(R.id.setting_gender_button);
         Log.d("View.INVISIBLE",String.valueOf(View.INVISIBLE));
         button.setVisibility(view.INVISIBLE);
 
-        radioGroup.setOnCheckedChangeListener(radioGroup_Listner);
-        button.setOnClickListener(button_Listner);
+        //폰트 설정, 버튼들 하드코딩...(RadioGroup 이 child layout 처리를 못해줌 )
+        {
+            RadioButton radioButton = null;
+
+            for(int i = 0 ; i < 2 ; i++)
+            {
+                switch(i) {
+                    case 0:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_gender_male);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                gender = "남성";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                    case 1:
+                        radioButton = (RadioButton) view.findViewById(R.id.setting_gender_female);
+                        radioButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                for(RadioButton bt : mRadioButtons) {
+                                    bt.setChecked(false);
+                                }
+                                gender = "여성";
+                                ((RadioButton)view).setChecked(true);
+                                button.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        break;
+                }
+
+                if(radioButton != null) {
+                    radioButton.setTypeface(CustomFont.getInstance().getTypeface());
+                    mRadioButtons.add(radioButton);
+                }
+            }
+        }
+
+        button.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mCallback.genderSetting(view,gender);
+            }
+        });
 
         return view;
     }
-
-    Button.OnClickListener button_Listner = new Button.OnClickListener(){
-        @Override
-        public void onClick(View view) {
-            switch (radioGroup.getCheckedRadioButtonId()) {
-                case R.id.setting_gender_male:
-                    gender = "Male";
-                    break;
-                case R.id.setting_gender_female:
-                    gender = "Female";
-                    break;
-            }
-            mCallback.genderSetting(view,gender);
-        }
-    };
-
-    RadioGroup.OnCheckedChangeListener radioGroup_Listner = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            if(i != -1 ){
-                Log.d("View.VISIBLE",String.valueOf(View.VISIBLE));
-                button.setVisibility(view.VISIBLE);
-            }
-        }
-    };
 
     @Override
     public void onAttach(Activity activity) {

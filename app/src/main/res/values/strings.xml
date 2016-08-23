@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Paperfume</string>
     <string name="splash_text">지친 당신에게 책 냄새를 선물할게요.</string>
-    <string name="gender_question_text">성별이\n뭐에요?</string>
-    <string name="gender_male">남자에요</string>
-    <string name="gender_female">여자에요</string>
-    <string name="blood_question_text">혈액형이\n뭐에요?</string>
+    <string name="gender_question_text">성별을 알려주세요.</string>
+    <string name="gender_male">남성</string>
+    <string name="gender_female">여성</string>
+    <string name="blood_question_text">혈액형이 뭐에요?</string>
     <string name="blood_A">A형</string>
     <string name="blood_B">B형</string>
     <string name="blood_O">O형</string>
     <string name="blood_AB">AB형</string>
-    <string name="age_question_text">나이를\n알려주세요.</string>
-    <string name="color_question_text">어떤 색을\n좋아하세요?</string>
+    <string name="age_question_text">나이를 알려주세요.</string>
+    <string name="color_question_text">어떤 색을 좋아하세요?</string>
     <string name="color_black">검정</string>
     <string name="color_purple">보라</string>
     <string name="color_green">초록</string>
