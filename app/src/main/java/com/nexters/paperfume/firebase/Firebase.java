@@ -64,24 +64,30 @@ public class Firebase {
     }
 
     public void login(final Runnable success, final Runnable failed) {
-        mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                mLoggedIn = true;
-                if(success != null)
-                    success.run();
+        if(mLoggedIn) {
+            if(success != null)
+                success.run();
+        }
+        else {
+            mAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    mLoggedIn = true;
+                    if (success != null)
+                        success.run();
 
-                Log.d(TAG, "signInAnonymously onSuccess");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                mLoggedIn = false;
-                if(failed != null)
-                    failed.run();
+                    Log.d(TAG, "signInAnonymously onSuccess");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    mLoggedIn = false;
+                    if (failed != null)
+                        failed.run();
 
-                Log.w(TAG, "signInAnonymously", e);
-            }
-        });
+                    Log.w(TAG, "signInAnonymously", e);
+                }
+            });
+        }
     }
 }
