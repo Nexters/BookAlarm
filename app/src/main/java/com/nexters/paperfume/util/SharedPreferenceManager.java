@@ -3,6 +3,8 @@ package com.nexters.paperfume.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.nexters.paperfume.App;
+
 /**
  * Created by sangyeonK on 2016-08-14.
  */
@@ -14,16 +16,12 @@ public class SharedPreferenceManager {
     }
 
     private SharedPreferenceManager() {
+        mSharedPreferences = App.getInstance().getSharedPreferences(PAPERFUME_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     private static final String PAPERFUME_PREFERENCES = "PAPERFUME_PREFERENCES" ;
 
     private SharedPreferences mSharedPreferences;
-
-    public void init(Context context){
-        mSharedPreferences = context.getSharedPreferences(PAPERFUME_PREFERENCES, Context.MODE_PRIVATE);
-
-    }
 
     public void setBoolean(String key, Boolean value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();

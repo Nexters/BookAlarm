@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 import android.content.res.Resources;
 
 import com.google.gson.Gson;
+import com.nexters.paperfume.App;
 import com.nexters.paperfume.R;
 import com.nexters.paperfume.enums.Feeling;
 import com.nexters.paperfume.enums.PartOfDay;
@@ -31,7 +32,13 @@ public class FragranceManager {
     }
 
     private FragranceManager() {
+        mResources = App.getInstance().getResources();
+        mAssetManager = App.getInstance().getAssets();
 
+        loadFragrance(Feeling.HAPPY, "feelings/happy.xml");
+        loadFragrance(Feeling.GROOMY, "feelings/groomy.xml");
+        loadFragrance(Feeling.MISS, "feelings/miss.xml");
+        loadFragrance(Feeling.STIFLED, "feelings/stifled.xml");
     }
 
     public static final String KEY_LAST_FRAGRANCE_TIMESTAMP = "LAST_FRAGRANCE_TIME";       //마지막 향 정보 획득 시간
@@ -40,16 +47,6 @@ public class FragranceManager {
     private AssetManager mAssetManager;
     private Resources mResources;
     private HashMap<Feeling, HashMap< PartOfDay, HashMap< String, Vector<FragranceInfo>>>> mMapFragranceInfo = new HashMap<Feeling, HashMap<PartOfDay, HashMap< String, Vector<FragranceInfo>>>>();
-
-    public void init(Resources resources, AssetManager assetManager) {
-        mResources = resources;
-        mAssetManager = assetManager;
-
-        loadFragrance(Feeling.HAPPY, "feelings/happy.xml");
-        loadFragrance(Feeling.GROOMY, "feelings/groomy.xml");
-        loadFragrance(Feeling.MISS, "feelings/miss.xml");
-        loadFragrance(Feeling.STIFLED, "feelings/stifled.xml");
-    }
 
     /**
      * assets 로부터 향기 정보를 읽어온다

@@ -3,6 +3,8 @@ package com.nexters.paperfume.util;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
+import com.nexters.paperfume.App;
+
 /**
  * Created by nexon on 2016-08-14.
  */
@@ -14,12 +16,11 @@ public class CustomFont {
     }
 
     private CustomFont() {
+        mTypeface = Typeface.createFromAsset(App.getInstance().getAssets(), "fonts/KoPubDotumLight.ttf");
     }
 
+
     Typeface mTypeface;
-    public void init(AssetManager assetManager){
-        mTypeface = Typeface.createFromAsset(assetManager, "fonts/KoPubDotumLight.ttf");
-    }
 
     public Typeface getTypeface() {
         return mTypeface;
