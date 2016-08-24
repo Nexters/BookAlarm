@@ -15,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.nexters.paperfume.content.Setting;
 import com.nexters.paperfume.content.Status;
 import com.nexters.paperfume.content.book.BookInfo;
 import com.nexters.paperfume.content.book.MyBook;
@@ -25,7 +27,10 @@ import com.nexters.paperfume.content.fragrance.FragranceInfo;
 import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.enums.Feeling;
 import com.nexters.paperfume.util.BitmapBlur;
+import com.nexters.paperfume.util.CustomFont;
 import com.nexters.paperfume.util.SecretTextView;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -47,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
     private Feeling feeling;
     private FragranceInfo fragranceInfo;
     private BookInfo[] bookInfos;
+
+    //setting
+    private RelativeLayout root;
+    private LinearLayout mySetting;
+    private LinearLayout main;
+    private TextView settingText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +107,33 @@ public class MainActivity extends AppCompatActivity {
         catch (IOException ioe){
 
         }
+
+        //setting
+        root = (RelativeLayout)findViewById(R.id.root);
+        mySetting = (LinearLayout)findViewById(R.id.mySetting);
+        main = (LinearLayout)findViewById(R.id.main);
+        settingText = (TextView)findViewById(R.id.settingText);
+
+        mySetting.setVisibility(View.GONE);
+
+        String sFragranceSetting = getResources().getString(R.string.format_fragrance_mySetting, Setting.getInstance().getAge(), Setting.getInstance().getBlood(),Setting.getInstance().getColorKor());
+        settingText.setText(sFragranceSetting);
+
+        text.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mySetting.setVisibility(View.VISIBLE);
+                root.bringChildToFront(mySetting);
+            }
+        });
+
+        mySetting.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mySetting.setVisibility(View.GONE);
+                root.bringChildToFront(main);
+            }
+        });
     }
 
     @Override

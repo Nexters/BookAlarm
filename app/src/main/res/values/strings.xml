@@ -40,4 +40,5 @@
 
     <string name="foramt_fragrance_guide">%1$s의 %2$s 당신에겐\n %3$s %4$s향이 나는 책이 어울려요</string>
     <string name="format_fragrance_main">%1$s의\n %2$s 당신에게.</string>
+    <string name="format_fragrance_mySetting">%1$s살 %2$s형의 %3$s색을 좋아하는\n당신에게 우리는 매일\n3권의 책을 추천해 줄게요.</string>
 </resources>
