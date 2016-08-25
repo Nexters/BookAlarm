@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
@@ -18,6 +19,7 @@ import android.widget.RadioButton;
 import com.nexters.paperfume.content.Status;
 import com.nexters.paperfume.enums.Feeling;
 
+import com.nexters.paperfume.firebase.Firebase;
 import com.nexters.paperfume.util.CustomFont;
 import com.nexters.paperfume.util.BackPressCloseHandler;
 
@@ -30,18 +32,27 @@ import java.util.ArrayList;
 
 public class FeelingActivity extends AppCompatActivity {
     Button button;
-    ArrayList<RadioButton> mRadioButtons = new ArrayList<RadioButton>();
+    ArrayList<RadioButton> mRadioButtons;
     private Feeling feeling;
     private BackPressCloseHandler backPressCloseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //아직 로그인 되지 않았다면 Splash액티비티 로 이동
+        if(false == Firebase.getInstance().isLoggedIn()) {
+            App.getInstance().startSplashActivity(this);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_feeling);
         button = (Button) findViewById(R.id.feeling_button);
         button.setVisibility(View.INVISIBLE);
         backPressCloseHandler = new BackPressCloseHandler(this);
 
+        mRadioButtons = new ArrayList<RadioButton>();
         //폰트 설정, 버튼들 하드코딩...(RadioGroup 이 child layout 처리를 못해줌 )
         {
             RadioButton radioButton = null;
@@ -125,8 +136,6 @@ public class FeelingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        //notifyUser();
     }
 
     @Override
@@ -139,27 +148,4 @@ public class FeelingActivity extends AppCompatActivity {
         backPressCloseHandler.onBackPressed();
     }
 
-    /**
-     * 로컬 notification 설정
-     */
-    public void notifyUser() {
-        Intent intent = new Intent(this, Splash.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(FeelingActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
-        notificationBuilder.setSmallIcon(R.mipmap.mdpiic_launcher_a_p_p);
-        notificationBuilder.setContentTitle("MessageTitle");
-        notificationBuilder.setContentText("MessageBody");
-        notificationBuilder.setAutoCancel(true);
-        notificationBuilder.setSound(defaultSoundUri);
-        notificationBuilder.setContentIntent(pendingIntent);
-
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notificationBuilder.build());
-    }
 }

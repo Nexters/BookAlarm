@@ -41,6 +41,10 @@ public class Firebase {
             return mUser.getUid();
     }
 
+    public boolean isLoggedIn() {
+        return mLoggedIn;
+    }
+
     private Firebase() {
         // firebaseAuth 초기화
         mAuth = FirebaseAuth.getInstance();
