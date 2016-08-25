@@ -20,6 +20,7 @@
     <string name="color_red">빨강</string>
     <string name="color_pink">분홍</string>
     <string name="color_white">하양</string>
+    <string name="color_none">무색</string>
     <string name="feeling_question_text">지금 기분이 어때요?</string>
     <string name="feeling_hqppy">행복해요</string>
     <string name="feeling_miss">그리워요</string>
@@ -41,4 +42,7 @@
     <string name="foramt_fragrance_guide">%1$s의 %2$s 당신에겐\n %3$s %4$s향이 나는 책이 어울려요</string>
     <string name="format_fragrance_main">%1$s의\n %2$s 당신에게.</string>
     <string name="format_fragrance_mySetting">%1$s살 %2$s형의 %3$s색을 좋아하는\n당신에게 우리는 매일\n3권의 책을 추천해 줄게요.</string>
+
+    <string name="notify_title">새로운 책을 확인해 보세요.</string>
+    <string name="notify_message">당신의 기분에 맞춰 새로운 책을 소개해 줄게요.</string>
 </resources>
