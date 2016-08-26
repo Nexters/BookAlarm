@@ -1,4 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">페이퍼퓸</string>
+    <string name="splash_text">지친 당신에게 책 냄새를 선물할게요.</string>
+    <string name="gender_question_text">성별을 알려주세요.</string>
+    <string name="gender_male">남성</string>
+    <string name="gender_female">여성</string>
+    <string name="blood_question_text">혈액형이 뭐에요?</string>
+    <string name="blood_A">A형</string>
+    <string name="blood_B">B형</string>
+    <string name="blood_O">O형</string>
+    <string name="blood_AB">AB형</string>
+    <string name="age_question_text">나이를 알려주세요.</string>
+    <string name="color_question_text">어떤 색을 좋아하세요?</string>
+    <string name="color_black">검정</string>
+    <string name="color_purple">보라</string>
+    <string name="color_green">초록</string>
+    <string name="color_sky">하늘</string>
+    <string name="color_blue">파랑</string>
+    <string name="color_yellow">노랑</string>
+    <string name="color_red">빨강</string>
+    <string name="color_pink">분홍</string>
+    <string name="color_white">하양</string>
+    <string name="color_none">무색</string>
+    <string name="feeling_question_text">지금 기분이 어때요?</string>
+    <string name="feeling_hqppy">행복해요</string>
+    <string name="feeling_miss">그리워요</string>
+    <string name="feeling_groomy">우울해요</string>
+    <string name="feeling_stifled">답답해요</string>
+
+    <string name="exit_toast">\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.</string>
+    <string name="download_book">추천할 책을 확인하는 중입니다.잠시만 기다려주세요.</string>
+    <string name="failed_login">서버 접속이 원활하지 않습니다.\n잠시 후 다시 시도해주세요.</string>
+    <string name="failed_download_book">추천할 책을 확인하는 도중 오류가 발생했습니다.잠시 후 다시 시도해주세요.</string>
+
+    <string name="error">오류</string>
+    <string name="ok">확인</string>
+    <string name="next">NEXT</string>
+
+
+    <string name="title_activity_detail">Detail</string>
+
+    <string name="foramt_fragrance_guide">%1$s의 %2$s 당신에겐\n %3$s %4$s향이 나는 책이 어울려요</string>
+    <string name="format_fragrance_main">%1$s의\n %2$s 당신에게.</string>
+    <string name="format_fragrance_mySetting">%1$s살 %2$s형의 %3$s색을 좋아하는\n당신에게 우리는 매일\n3권의 책을 추천해 줄게요.</string>
+
+    <string name="notify_title">새로운 책을 확인해 보세요.</string>
+    <string name="notify_message">당신의 기분에 맞춰 새로운 책을 소개해 줄게요.</string>
 </resources>
