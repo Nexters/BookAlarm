@@ -31,11 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
             <LinearLayout
+                android:layout_marginLeft="54dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
             <RadioButton
@@ -62,21 +59,14 @@
                 android:layout_marginLeft="70dp"
                 android:layout_marginStart="70dp"/>
             </LinearLayout>
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="67dp">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
             <LinearLayout
+                android:layout_marginLeft="54dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <RadioButton
@@ -105,10 +95,6 @@
                     android:layout_marginLeft="70dp"
                     android:layout_marginStart="70dp"/>
             </LinearLayout>
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
         </LinearLayout>
     </RadioGroup>
 

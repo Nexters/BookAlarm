@@ -39,57 +39,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <RadioButton
                     android:text="@string/gender_male"
                     android:textSize="18sp"
+                    android:layout_marginLeft="145dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/setting_gender_male"
                     android:button="@null"
                     android:textColor="@drawable/radio_text"
                     android:drawableLeft="@drawable/radio_button"
-                    android:drawablePadding="10dp"/>
+                    android:drawablePadding="7.3dp"/>
             </LinearLayout>
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="67dp">
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <RadioButton
                     android:id="@+id/setting_gender_female"
                     android:text="@string/gender_female"
                     android:textSize="18sp"
+                    android:layout_marginLeft="145dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:button="@null"
                     android:textColor="@drawable/radio_text"
                     android:drawableLeft="@drawable/radio_button"
-                    android:drawablePadding="10dp"/>
+                    android:drawablePadding="7.3dp"/>
             </LinearLayout>
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
         </LinearLayout>
     </RadioGroup>
 
