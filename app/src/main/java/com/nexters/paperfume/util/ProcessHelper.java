@@ -5,7 +5,7 @@ package com.nexters.paperfume.util;
  */
 
 public class ProcessHelper {
-    public static void Exit() {
+    public static void exit() {
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(1);
     }

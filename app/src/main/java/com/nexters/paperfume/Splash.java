@@ -14,29 +14,16 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.Gson;
 import com.nexters.paperfume.content.Setting;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.view.View;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.nexters.paperfume.content.book.MyBook;
-import com.nexters.paperfume.content.fragrance.FragranceManager;
 import com.nexters.paperfume.content.book.FeaturedBook;
 import com.nexters.paperfume.firebase.Firebase;
-import com.nexters.paperfume.util.CustomFont;
 import com.nexters.paperfume.util.ProcessHelper;
 import com.nexters.paperfume.util.SharedPreferenceManager;
 
@@ -84,7 +71,7 @@ public class Splash extends AppCompatActivity {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
                 dialogInterface.dismiss();
-                ProcessHelper.Exit();
+                ProcessHelper.exit();
             }
         });
 
@@ -213,5 +200,11 @@ public class Splash extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ProcessHelper.exit();
     }
 }
