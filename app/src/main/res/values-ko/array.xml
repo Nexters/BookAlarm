@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fragrance_adjective">
+        <item>풋풋한</item>
+        <item>깨끗한</item>
+        <item>우아한</item>
+        <item>진한</item>
+        <item>신선한</item>
+        <item>달콤한</item>
+        <item>향긋한</item>
+        <item>시원한</item>
+    </string-array>
+</resources>
